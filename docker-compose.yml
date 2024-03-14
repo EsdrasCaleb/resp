@@ -1,0 +1,7 @@
+services:
+  pyton:
+    build: .
+    volumes:
+        - .:/usr/src/app
+    restart: always
+    tty: true

@@ -6,9 +6,10 @@ from tqdm import tqdm
 import time
 
 
-class ACM(object):
-    def __init__(self):
-        pass
+class IEEE(object):
+    def __init__(self, api_key):
+        """api key of IEEE api"""
+        self.api_key = api_key
 
     def payload(self, keyword, st_page=0, pasize=50, start_year=2018, end_year=2022):
 
@@ -23,7 +24,7 @@ class ACM(object):
         )
 
         response = requests.get(
-            "https://dl.acm.org/action/doSearch",
+            ": https://ieeexploreapi.ieee.org/api/v1/search/articles",
             params=params,
             headers={"accept": "application/json"},
         )
@@ -37,22 +38,20 @@ class ACM(object):
         main_class = soup.find(
             "div", {"class": "col-lg-9 col-md-9 col-sm-8 sticko__side-content"}
         )
-        main_c = main_class.find_all("li", {"class": "search__item issue-item-container"})
-        print(main_c)
-        for paper_ob in main_c:
+        main_c = main_class.find_all("div", {"class": "issue-item__content"})
+
+        for paper in main_c:
             temp_data = {}
+
             doi_url = ["https://dl.acm.org", "doi", "pdf"]
             try:
-                paper = paper_ob.find("div", {"class": "issue-item__content"})
                 content_ = paper.find("h5", {"class": "issue-item__title"})
                 paper_url = content_.find("a", href=True)["href"].split("/")
-                paper_year = paper_ob.find("div",{"class":"bookPubDate simple-tooltip__block--b"}).text.split(" ")
+
                 doi_url.extend(paper_url[2:])
                 title = content_.text
                 temp_data["title"] = title
                 temp_data["link"] = "/".join(doi_url)
-                temp_data["year"] = paper_year[1]
-                temp_data["month"] = paper_year[0]
                 all_papers.append(temp_data)
             except Exception as e:
                 pass
