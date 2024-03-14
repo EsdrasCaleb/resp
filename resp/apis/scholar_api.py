@@ -6,24 +6,23 @@ from tqdm import tqdm
 import time
 
 
-class ACM(object):
+class Scholar(object):
     def __init__(self):
         pass
 
-    def payload(self, keyword, st_page=0, pasize=50, start_year=2018, end_year=2022):
+    def payload(self, keyword, st_page=0, pasize=50, start_year, end_year):
 
         params = (
-            ("AllField", keyword),
-            ("AfterYear", str(start_year)),
-            ("BeforeYear", str(end_year)),
-            ("queryID", "45/3852851837"),
+            ("q", keyword),
+            ("as_ylo", str(start_year)),
+            ("as_yhi", str(end_year)),
             ("sortBy", "relevancy"),
             ("startPage", str(st_page)),
             ("pageSize", str(pasize)),
         )
 
         response = requests.get(
-            "https://dl.acm.org/action/doSearch",
+            "https://scholar.google.com/scholar",
             params=params,
             headers={"accept": "application/json"},
         )
@@ -38,7 +37,6 @@ class ACM(object):
             "div", {"class": "col-lg-9 col-md-9 col-sm-8 sticko__side-content"}
         )
         main_c = main_class.find_all("li", {"class": "search__item issue-item-container"})
-        
         for paper_ob in main_c:
             temp_data = {}
             doi_url = ["https://dl.acm.org", "doi", "pdf"]
@@ -60,7 +58,7 @@ class ACM(object):
         df = pd.DataFrame(all_papers)
         return df
 
-    def acm(
+    def query(
         self,
         keyword,
         max_pages=5,
