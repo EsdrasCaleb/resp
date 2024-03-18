@@ -20,9 +20,7 @@
 ## 🤖 Setup
 
 ```shell
-git clone https://github.com/monk1337/resp
-cd resp 
-pip install -r requirements.txt && pip install -e .
+docker-compose up
 ```
 
 
