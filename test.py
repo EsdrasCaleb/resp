@@ -9,5 +9,5 @@ from resp.resp import Resp
 
 
 sc = Scholar()
-result = sc.query("Machine Learning")
+result = sc.query("Machine Learning",1)
 print(result)
