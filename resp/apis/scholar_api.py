@@ -36,21 +36,6 @@ class Scholar(object):
     def citations(self,citeurl,paper_year):
         time.sleep(self.api_wait)
         response = requests.get(
-            "https://scholar.google.com"+citeurl,
-            headers={"accept": "application/json"},
-        )
-        citesoup = BeautifulSoup(response.text, "html.parser")
-        
-        search = citesoup.find(
-            "div", {"id": "gs_ab_md"}
-        )
-        part = search.find("div",{"class":"gs_ab_mdw"})
-      
-        paper_count = [int(i) for i in part.contents[0].split(" ") if i.isdigit()][0]
-        
-        print(paper_count)
-        time.sleep(self.api_wait)
-        response = requests.get(
             "https://scholar.google.com"+citeurl+"&as_ylo="+str(paper_year)+"&as_yhi="+str(paper_year+self.year_dept),
             headers={"accept": "application/json"},
         )
@@ -63,7 +48,6 @@ class Scholar(object):
       
         paper_count = [int(i) for i in part.contents[0].split(" ") if i.isdigit()][0]
         
-        print(paper_count)
         return paper_count
 
     def soup_html(self, soup):
