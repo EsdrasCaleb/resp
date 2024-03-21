@@ -6,8 +6,9 @@ from resp.apis.ieee_api import IEEE
 from resp.apis.scholar_api import Scholar
 from resp.apis.arxiv_api import Arxiv
 from resp.resp import Resp
+import random
 
-
+topics = ["Software Engineering","Machine Learning","software architecture"]
 sc = Scholar()
-result = sc.query("Machine Learning",1)
+result = sc.query(topics[ random.randint(0, len(topics)-1)],1)
 print(result)
