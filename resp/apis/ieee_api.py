@@ -5,45 +5,51 @@ import pandas as pd
 from tqdm import tqdm
 import time
 
+#modificar https://github.com/starshineee/crawl-IEEE-article/blob/master/crawl.py
 
 class IEEE(object):
-    def __init__(self, api_key):
-        """api key of IEEE api"""
-        self.api_key = api_key
+    def __init__(self):
+        pass
 
-    def payload(self, keyword, st_page=0, pasize=50, start_year=2018, end_year=2022):
+    def payload(self, keyword, st_page=0, start_year=2018, end_year=2022):
 
         params = (
-            ("AllField", keyword),
-            ("AfterYear", str(start_year)),
-            ("BeforeYear", str(end_year)),
+            ("queryText", keyword),
+            ("refinements", "ContentType:Early Access Articles"),
+            ("refinements", "ContentType:Conferences"),
+            ("refinements", "ContentType:Journals"),
+            ("refinements", "ContentType:Magazines"),
+            ("ranges", str(start_year)+"_"+str(end_year)+"_Year"),
             ("queryID", "45/3852851837"),
-            ("sortBy", "relevancy"),
-            ("startPage", str(st_page)),
-            ("pageSize", str(pasize)),
+            ("pageNumber", str(st_page))
         )
-
         response = requests.get(
-            ": https://ieeexploreapi.ieee.org/api/v1/search/articles",
+            "https://ieeexplore.ieee.org/search/searchresult.jsp",
             params=params,
-            headers={"accept": "application/json"},
+            headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0"},
         )
         soup = BeautifulSoup(response.text, "html.parser")
-
         return soup
-
+    def article_data(self,articleurl):
+        response = requests.get(
+            articleurl,
+            headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0"},
+        )
+        soup = BeautifulSoup(response.text, "html.parser")
     def soup_html(self, soup):
 
         all_papers = []
         main_class = soup.find(
-            "div", {"class": "col-lg-9 col-md-9 col-sm-8 sticko__side-content"}
+            "xpl-results-list"
         )
-        main_c = main_class.find_all("div", {"class": "issue-item__content"})
+
+        main_c = main_class.find_all("div", {"class": "List-results-items"})
 
         for paper in main_c:
             temp_data = {}
 
-            doi_url = ["https://dl.acm.org", "doi", "pdf"]
+            print(paper)
+            return
             try:
                 content_ = paper.find("h5", {"class": "issue-item__title"})
                 paper_url = content_.find("a", href=True)["href"].split("/")
@@ -59,24 +65,23 @@ class IEEE(object):
         df = pd.DataFrame(all_papers)
         return df
 
-    def acm(
+    def query(
         self,
         keyword,
         max_pages=5,
-        min_year=2015,
-        max_year=2022,
-        full_page_result=False,
+        min_year=2008,
+        max_year=2021,
         api_wait=5,
     ):
-        "acm final call"
+        "iee final call"
         all_pages = []
 
         for page in tqdm(range(max_pages)):
-            acm_soup = self.payload(
-                keyword, st_page=page, pasize=50, start_year=min_year, end_year=max_year
+            ieee_soup = self.payload(
+                keyword, st_page=page, start_year=min_year, end_year=max_year
             )
 
-            acm_result = self.soup_html(acm_soup)
+            acm_result = self.soup_html(ieee_soup)
             all_pages.append(acm_result)
             time.sleep(api_wait)
 

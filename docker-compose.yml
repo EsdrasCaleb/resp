@@ -2,5 +2,5 @@ services:
   pyton:
     build: .
     volumes:
-        - .:/usr/src/app
+        - .:/app
     tty: true

@@ -82,8 +82,7 @@ class Scholar(object):
                 print("error")
                 print(e)
 
-        df = pd.DataFrame(all_papers)
-        return df
+        return all_papers
 
     def query(
         self,
@@ -93,10 +92,10 @@ class Scholar(object):
         all_pages = []
 
         for page in tqdm(range(max_pages)):
+            time.sleep(self.api_wait)
             scholar_soup = self.payload(
                 keyword, st_page=page, pasize=10
             )
-            time.sleep(self.api_wait)
             scholar_result = self.soup_html(scholar_soup)
             all_pages.append(scholar_result)
 
