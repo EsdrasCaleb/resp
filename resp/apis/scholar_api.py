@@ -8,7 +8,7 @@ import time
 
 class Scholar(object):
 
-    def __init__(self,start_year=2018,end_year=2022,year_dept=2):
+    def __init__(self,start_year=2004,end_year=2021,year_dept=2):
         self.start_year = start_year
         self.end_year = end_year
         self.year_dept = year_dept
@@ -30,7 +30,6 @@ class Scholar(object):
         )
         
         soup = BeautifulSoup(response.text, "html.parser")
-
         return soup
 
     def citations(self,citeurl,paper_year):
@@ -53,13 +52,13 @@ class Scholar(object):
     def soup_html(self, soup):
 
         all_papers = []
-        
+
         main_class = soup.find(
             "div", {"id": "gs_res_ccl_mid"}
         )
 
         main_c = main_class.find_all("div", {"class": "gs_r gs_or gs_scl"})
-        
+
         for paper in main_c:
             temp_data = {}
             
@@ -97,8 +96,13 @@ class Scholar(object):
                 keyword, st_page=page, pasize=10
             )
             scholar_result = self.soup_html(scholar_soup)
-            all_pages.append(scholar_result)
+            all_pages += scholar_result
 
+        return all_pages
 
-        df = pd.concat(all_pages)
-        return df
+    def paper_citations(self,paper_name,paper_year):
+        scholar_soup = self.payload(
+            paper_name, st_page=0, pasize=1
+        )
+        lowbar = scholar_soup.find("div", {"class": "gs_fl gs_flb gs_invis"})
+        return self.citations(lowbar.contents[4]["href"], int(paper_year))

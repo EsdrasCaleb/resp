@@ -18,5 +18,5 @@ import random
 #result = td.query("serious game")
 
 acm = ACM()
-print(acm.all_paper(0,1))
+print(acm.all_paper(0,1,10))
 #acm.query(topics[ random.randint(0, len(topics)-1)],1)

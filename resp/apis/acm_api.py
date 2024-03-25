@@ -8,7 +8,7 @@ import time
 
 class ACM(object):
     def __init__(self):
-        self.api_wait = 1
+        self.api_wait = 3
         self.mounths = {
             "Jan":1, "Feb":2, "Mar":3, "Apr":4, "Jun":6, "Jul":7,"Aug":8, "Sep":9, "Oct":10, "Nov":11, "Dec":12,
             "January":1,"February":2,"March":3,"April":4,"May":5,"June":6,"July":7,"August":8,
@@ -60,11 +60,11 @@ class ACM(object):
         return soup
 
     def soup_html(self, soup):
-
         all_papers = []
         main_class = soup.find(
             "div", {"class": "col-lg-9 col-md-9 col-sm-8 sticko__side-content"}
         )
+
         main_c = main_class.find_all("li", {"class": "search__item issue-item-container"})
         
         for paper_ob in main_c:
@@ -95,20 +95,17 @@ class ACM(object):
             terms_array.append(term.text)
         paper_data = {"terms":terms_array}
         paper_data["title"] = soup.find("h1", {"class": "citation__title"}).text
-
         year_data = soup.find("span", {"class": "CitationCoverDate"}).text.split(" ")
         paper_data["year"] = year_data[2]
-
         paper_data["mounth"] = self.mounths[year_data[1]]
-
         paper_data["origin"] = soup.find("span", {"class": "epub-section__title"}).text
-
         paper_data["doi"] = "/".join(paperurl.split("/")[2:])
+        paper_data["references"] = len(soup.find_all("li", {"class": "references__item"}))
 
         return paper_data
 
 
-    def all_paper(self,start_page=0,max_pages=5,
+    def all_paper(self,start_page=0,max_pages=5,pagesize=50,
         min_year=2004,
         max_year=2021,
         ):
@@ -118,11 +115,11 @@ class ACM(object):
         for page in tqdm(range(max_pages)):
             time.sleep(self.api_wait)
             acm_soup = self.all_articles(
-                st_page=page+start_page, pasize=50, start_year=min_year, end_year=max_year
+                st_page=page+start_page, pasize=pagesize, start_year=min_year, end_year=max_year
             )
 
             acm_result = self.soup_html(acm_soup)
-            all_pages.append(acm_result)
+            all_pages += acm_result
 
 
         return all_pages
@@ -144,7 +141,7 @@ class ACM(object):
             )
 
             acm_result = self.soup_html(acm_soup)
-            all_pages.append(acm_result)
+            all_pages += acm_result
             time.sleep(api_wait)
 
         return all_pages

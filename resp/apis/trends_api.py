@@ -4,7 +4,7 @@ import time
 
 class Trends(object):
 
-    def __init__(self,api_wait=2,headers = []):
+    def __init__(self,api_wait=5,headers = []):
         if(headers == []):
             headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
                             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",

@@ -18,9 +18,12 @@
 
 
 ## 🤖 Setup
-
+instal docker
 ```shell
+
+systemctl start docker
 docker-compose up
+docker exec -it resp_pyton_1 bash
 ```
 
 
