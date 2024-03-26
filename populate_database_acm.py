@@ -27,5 +27,8 @@ for paper in papers:
     for term in paper["terms"]:
         #check database is term exists id don't populate
         result = td.query(term)
-        print(result)
+        dic = result.to_dict()
+        for rr in dic[term]:
+            print(rr.year, rr.month) #mes e ano
+            print(dic[term][rr]) #valor
     break
