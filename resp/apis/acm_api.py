@@ -73,8 +73,7 @@ class ACM(object):
                 paper = paper_ob.find("div", {"class": "issue-item__content"})
                 content_ = paper.find("h5", {"class": "issue-item__title"})
                 paper_url = content_.find("a", href=True)["href"]
-                temp_data = self.get_paperdata(paper_url)
-                all_papers.append(temp_data)
+                all_papers.append(paper_url)
             except Exception as e:
                 print("error")
                 print(e)

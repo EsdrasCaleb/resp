@@ -12,7 +12,7 @@ from pytrends import exceptions
 
 class Trends(object):
 
-    def __init__(self,api_wait=5,headers = []):
+    def __init__(self,api_wait=5,headers = [],token=""):
         if(headers == []):
             headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
                             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -27,7 +27,13 @@ class Trends(object):
                             "Sec-Fetch-User": "?1"
                             }
         self.headers = headers
+        self.token = token
         self.api_wait = api_wait
+
+    def serach(self,keyword)
+        standardurl = "https://trends.google.com.br/trends/api/widgetdata/multiline?hl=pt-BR&tz=180&req={%22time%22:%222024-03-25T13\\:08\\:55+2024-03-26T13\\:08\\:55%22,%22resolution%22:%22EIGHT_MINUTE%22,%22locale%22:%22pt-BR%22,%22comparisonItem%22:[{%22geo%22:{%22country%22:%22BR%22},%22complexKeywordsRestriction%22:{%22keyword%22:[{%22type%22:%22BROAD%22,%22value%22:%22"+keyword+"%22}]}}],%22requestOptions%22:{%22property%22:%22%22,%22backend%22:%22CM%22,%22category%22:0},%22userConfig%22:{%22userType%22:%22USER_TYPE_LEGIT_USER%22}}&token=APP6_UEAAAAAZgQaZ9S6RD2qD5vVS_dGZXMwGvI8AL5z&tz=180"
+        pass
+
 
     def payload(self, keyword):
         trends_header = self.headers

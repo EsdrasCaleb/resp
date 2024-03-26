@@ -21,7 +21,8 @@ sc = Scholar()
 td = Trends(3,headers)
 papers = acm.all_paper(0,1,1)
 print(papers)
-for paper in papers:
+for paper_url in papers:
+    paper = acm.get_paperdata(paper_url)
     result = sc.paper_citations(paper["title"],paper["year"])
     paper["f_citations"] =result
     for term in paper["terms"]:
