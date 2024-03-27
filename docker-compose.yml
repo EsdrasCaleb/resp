@@ -4,3 +4,19 @@ services:
     volumes:
         - .:/app
     tty: true
+
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: papersplease
+
+  adminer:
+    image: adminer
+    ports:
+      - 9090:8080
+
+  metabase:
+    image: metabase/metabase
+    ports:
+      - 3400:3000
