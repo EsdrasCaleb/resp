@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from tqdm import tqdm
 import time
+import random
 
 
 class Scholar(object):
@@ -12,7 +13,7 @@ class Scholar(object):
         self.start_year = start_year
         self.end_year = end_year
         self.year_dept = year_dept
-        self.api_wait=2
+        self.api_wait=7
 
     def payload(self, keyword, st_page=0, pasize=10):
 
@@ -22,21 +23,26 @@ class Scholar(object):
             ("as_yhi", str(self.end_year)),
             ("start", str(st_page*pasize)),
         )
-
+        time.sleep(self.api_wait + random.random()*2)
         response = requests.get(
             "https://scholar.google.com/scholar",
             params=params,
-            headers={"accept": "application/json"},
+            headers={
+                "accept": "application/json",
+                "Cookie":"GOOGLE_ABUSE_EXEMPTION=ID=f7786fc4867395fc:TM=1711593393:C=r:IP=89.39.107.172-:S=QHDfCTuFlUofZYsNgJ6p-Qc; NID=512=Cblf366wbr9ZKjtptxf8ceRYv-lGW1CmGA1M2b3vicbEtztUtysaWm5b69oiKEtCY5HnW3mKd5mMaj__M53cUuplqxEIvnACSMn1TFADuPhAqM8KH7_E3l6XB9k0qaeuA1AGZVX_zoYFtOpurCjqgE8CEI5fdCZjJK95dWOtu6c; GSP=A=tdd-wg:CPTS=1711593468:LM=1711593468:S=VwkQPpy_da2bQadB"
+             },
         )
         
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
 
     def citations(self,citeurl,paper_year):
-        time.sleep(self.api_wait)
+        time.sleep(self.api_wait+random.random()*2)
         response = requests.get(
             "https://scholar.google.com"+citeurl+"&as_ylo="+str(paper_year)+"&as_yhi="+str(paper_year+self.year_dept),
-            headers={"accept": "application/json"},
+            headers={"accept": "application/json",
+                     "Cookie": "GOOGLE_ABUSE_EXEMPTION=ID=f7786fc4867395fc:TM=1711593393:C=r:IP=89.39.107.172-:S=QHDfCTuFlUofZYsNgJ6p-Qc; NID=512=Cblf366wbr9ZKjtptxf8ceRYv-lGW1CmGA1M2b3vicbEtztUtysaWm5b69oiKEtCY5HnW3mKd5mMaj__M53cUuplqxEIvnACSMn1TFADuPhAqM8KH7_E3l6XB9k0qaeuA1AGZVX_zoYFtOpurCjqgE8CEI5fdCZjJK95dWOtu6c; GSP=A=tdd-wg:CPTS=1711593468:LM=1711593468:S=VwkQPpy_da2bQadB"
+                 },
         )
         citesoup = BeautifulSoup(response.text, "html.parser")
         
@@ -44,9 +50,12 @@ class Scholar(object):
             "div", {"id": "gs_ab_md"}
         )
         part = search.find("div",{"class":"gs_ab_mdw"})
-      
-        paper_count = [int(i) for i in part.contents[0].split(" ") if i.isdigit()][0]
-        
+
+        if(part.contents):
+            paper_count = [int(i.translate({ord('.'): None})) for i in part.contents[0].split(" ") if i.translate({ord('.'): None}).isdigit()][0]
+        else:
+            paper_count = 0
+
         return paper_count
 
     def soup_html(self, soup):
@@ -101,8 +110,19 @@ class Scholar(object):
         return all_pages
 
     def paper_citations(self,paper_name,paper_year):
+        self.start_year = paper_year
+        self.end_year = int(paper_year)+2
         scholar_soup = self.payload(
             paper_name, st_page=0, pasize=1
         )
+
         lowbar = scholar_soup.find("div", {"class": "gs_fl gs_flb gs_invis"})
-        return self.citations(lowbar.contents[4]["href"], int(paper_year))
+        if(lowbar):
+            return self.citations(lowbar.contents[4]["href"], int(paper_year))
+        else:
+            hibar = scholar_soup.findAll("div", {"class": "gs_fl gs_flb"})
+            if(hibar):
+                return self.citations(hibar[0].contents[4]["href"], int(paper_year))
+            else:
+                print("possivel erro no scholar")
+                return 0

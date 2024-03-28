@@ -4,12 +4,122 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from tqdm import tqdm
 import time
+import random
 
 #modificar https://github.com/starshineee/crawl-IEEE-article/blob/master/crawl.py
-
+#only retrns 10000 per query
 class IEEE(object):
     def __init__(self):
-        pass
+        self.wait = 0
+
+    def download_csv(self, documentids=[], cokie=""):
+        url = "https://ieeexplore.ieee.org/rest/search/export-csv"
+        data = {
+            "documentIds": documentids,
+            "returnFacets": ["ALL"],
+            "returnType": "SEARCH",
+        }
+        header= {
+            "Accept": "application/json,text/plain, */*",
+            "Accept-Language": "pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3",
+            "Accept-Encoding": "gzip,deflate,br",
+            "Referer": "https://ieeexplore.ieee.org/search/searchresult.jsp",
+            "Origin": "https://ieeexplore.ieee.org",
+            "Connection": "keep-alive",
+            "Cookie": cokie,
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "no-cors",
+            "Sec-Fetch-Site": "same-origin",
+            "X-Security-Request": "required",
+            "Content-Type": "application/json",
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache",
+            "TE": "trailers",
+            "Sec-GPC":"1",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
+        }
+        time.sleep(self.wait + random.random())
+        response = requests.post(
+            url, headers=header, json=data
+        )
+
+        return response.text
+
+
+    def serach_all_articles(self,start_year="2004",end_year="2021",page=1,
+                            content=["ContentType:Conferences","ContentType:Journals","ContentType:Magazines"],
+                            order=None,cokie=""):
+        url = "https://ieeexplore.ieee.org/rest/search"
+        data = {
+            "sortType": order,
+            "returnFacets": ["ALL"],
+            "refinements":content,
+            "ranges": [start_year+"_"+end_year+"_Year"],
+            "returnType": "SEARCH",
+            "rowsPerPage":100,
+            "pageNumber":page,
+        }
+        header = {
+            "Accept": "application/json,text/plain, */*",
+            "Accept-Language": "pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3",
+            "Accept-Encoding": "gzip,deflate,br",
+            "Referer": "https://ieeexplore.ieee.org/search/searchresult.jsp",
+            "Origin": "https://ieeexplore.ieee.org",
+            "Connection": "keep-alive",
+            "Cookie": cokie,
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "no-cors",
+            "Sec-Fetch-Site": "same-origin",
+            "X-Security-Request": "required",
+            "Content-Type": "application/json",
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache",
+            "TE": "trailers",
+            "Sec-GPC": "1",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
+        }
+
+        response = requests.post(
+            url, headers=header, json=data
+        )
+
+        return response.json()
+    def serach_articles(self,year,page=1,content=None,order=None,cokie=""):
+        url = "https://ieeexplore.ieee.org/rest/search"
+        data = {
+            "sortType": order,
+            "returnFacets": ["ALL"],
+            "refinements":content,
+            "ranges": [str(year)+"_"+str(year)+"_Year"],
+            "returnType": "SEARCH",
+            "rowsPerPage":100,
+            "pageNumber":page,
+        }
+        header = {
+            "Accept": "application/json,text/plain, */*",
+            "Accept-Language": "pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3",
+            "Accept-Encoding": "gzip,deflate,br",
+            "Referer": "https://ieeexplore.ieee.org/search/searchresult.jsp",
+            "Origin": "https://ieeexplore.ieee.org",
+            "Connection": "keep-alive",
+            "Cookie": cokie,
+            "Sec-Fetch-Dest": "empty",
+            "Sec-Fetch-Mode": "no-cors",
+            "Sec-Fetch-Site": "same-origin",
+            "X-Security-Request": "required",
+            "Content-Type": "application/json",
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache",
+            "TE": "trailers",
+            "Sec-GPC": "1",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
+        }
+        time.sleep(self.wait + random.random())
+        response = requests.post(
+            url, headers=header, json=data
+        )
+
+        return response.json()
 
     def payload(self, keyword, st_page=0, start_year=2018, end_year=2022):
 
@@ -22,6 +132,10 @@ class IEEE(object):
             ("ranges", str(start_year)+"_"+str(end_year)+"_Year"),
             ("queryID", "45/3852851837"),
             ("pageNumber", str(st_page))
+        )
+
+        headers=(
+            "Accept: application/json"
         )
         response = requests.get(
             "https://ieeexplore.ieee.org/search/searchresult.jsp",
