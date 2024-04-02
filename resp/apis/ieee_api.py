@@ -10,7 +10,7 @@ import random
 #only retrns 10000 per query
 class IEEE(object):
     def __init__(self):
-        self.wait = 0
+        self.wait = 2
 
     def download_csv(self, documentids=[], cokie=""):
         url = "https://ieeexplore.ieee.org/rest/search/export-csv"

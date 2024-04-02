@@ -1,25 +1,22 @@
 from pytrends.request import TrendReq
-import time
-import json
-import pandas as pd
+import user_agent
 import requests
-
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
-from requests import status_codes
+import json
+import random
+import time
 
 from pytrends import exceptions
 
 class Trends(object):
 
-    def __init__(self,api_wait=5,headers = []):
+    def __init__(self,api_wait=2,headers = []):
         if(headers == []):
-            headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
+            headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
                             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
                             "Accept-Language": "pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3",
                             "Accept-Encoding": "gzip, deflate, br",
                             "Connection": "keep-alive",
-                            "Cookie": "__utma=10102256.266499014.1711329929.1711329935.1711364173.2; __utmz=10102256.1711329935.1.1.utmcsr=trends.google.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utmc=10102256; NID=512=Fkm2jAGb35UbcfDpoSUK8Xq8qYvMouqi4NEEtdi2WE6-2_DuNY17psb2En8uSIFXDywWV2qWOYIWc4qZW7y6zvjfo-cbJxB3rHsGD2RcPFxShiY4H_a1LqT6a8z0qECPtpR_DavP7ayGf_vKCi8nU34X6JHIjVUqjekv5ePTb6bQp6BDyKEd0eKMU2A5NuvsxF0EPorUYj2Nh3imwViLjG4vA-mD671kl771EztsJnWrS4okFzA5Pjd96W10G83Yq_4np6NmTJCTbwpuNiqNE90WwJJa4BPA5jyvOEF4URFo8xCQHWsBdBAxJbUXd2EQvJ_Q1i0wpHCmOHYYGMstSgBdrxRSOLBkZ9emJoo38DLE9Qrr5YFe83mc_ixz7FR2SLBZqRsSlddla9ZGaT5ULPAiLSFqdc0Qg6OXw6Y0xnBwMlwJO3QAvCnkXgFjOr2ofT4v2TmuU7r2QWo3sgV_OD7AVqVeenq12sHEK2fszoTx3j1Zr5sINgCmNhxny4rj66EaAV5CUKXK8yG_LlymGUwwnNz8Vnog3dcfbWfekPwVilKioXCVPLmwW8tKWw2dyVJ_psPz13lpmJemR76zlCUBRT8CpSBaRHBO5DBfcHQw7rbJPbAGkSC4cXGZOfwsrls5GClj7WXWeSZ9rL_8raDevGPbz8OV18XT0OcqPKBWT_UfFXN7WHNhsjflgVhBUXITVYNHkSRtVsvgTdyX1Na28JIul9aMHqI5xRsHdkGpGdCuZLVEdd3ubS5stQq-nMEW8wWMRPCsrNilwSheHRQtTDHD48e98zKRa2QOFDm1zkWYrR3sVEFfNZ63MwtYNA9GQAWaj3whcWXcs9-mgSeGgwdXe0zGXZMJd8XtzChgptP3FaxKSu2dVFg9iGd9EbBut-N04NamZwQsSdKQ3L0ap2K1dWu_e3lrcIg2neIOIUmyEKdsK5bTSamGfoB-bS4CRI7xT2LyvsijVcRLogHstVS7oaS6xzmVZbvy52QZ7HXrsGD9aJw7L_wsen9u4PTa4crRBCSOabtEROGBScd2IKc4msAkpSMQs1Kd3PW5HIN2sw17gjsiAvo-kiLYyhdP85MnM0VOX27Y3FxE7uHXW5fPTglcubvVZlCWBB3jS-yXDVifqzZnxIqDUcRm6yEIXkH63IkgVvYVGjwBKiJpDKpfkpc; 1P_JAR=2024-03-25-12; SEARCH_SAMESITE=CgQI3ZoB; ANID=AHWqTUnMWdRx55Av9ABLl2GWIrI2RiR9RuoZKFufPgj97zX_cV5y63jVHDjwhQmy; AEC=Ae3NU9MPT8gahF1kgOwRZPQa1LkxMgOf_Hd4IX8JzSHj6b0MvQnlqPnn6g; SID=g.a000hwiw8mWaWz-JJQ7EkAAt3BqQ6_JarxYOiKw0HwYHVRnMbAze2ZhGJSsw3u96egHS8l_DnwACgYKARYSAQASFQHGX2MixOcpeIUvLCWscMbZ4BB3nRoVAUF8yKo4HBlWqp5Zqmsw1hwAzPpl0076; __Secure-1PSID=g.a000hwiw8mWaWz-JJQ7EkAAt3BqQ6_JarxYOiKw0HwYHVRnMbAzeycmqFnv3r3LaZHWgBr6H0AACgYKAZQSAQASFQHGX2MiMl4q32hh4G7BGfW00OhDkxoVAUF8yKr0vBT4pRACqqQusxGNwE2A0076; __Secure-3PSID=g.a000hwiw8mWaWz-JJQ7EkAAt3BqQ6_JarxYOiKw0HwYHVRnMbAzemSe-szt5jAMlFkrwBrPpHQACgYKAfkSAQASFQHGX2MiCAL6gHshElWP185oEkMZShoVAUF8yKrLdpM7PWxmEiN8EQRqFjbT0076; HSID=AvQssgkv8bTi_MJN7; SSID=A_PRG9X6FhoPiRmLL; APISID=1FQQAOetMu2Z_nqC/AB7a9Qt-I2eJzvrcu; SAPISID=OtI8AuS7T1j8PckO/AlrnvEvuaWMfkDjk4; __Secure-1PAPISID=OtI8AuS7T1j8PckO/AlrnvEvuaWMfkDjk4; __Secure-3PAPISID=OtI8AuS7T1j8PckO/AlrnvEvuaWMfkDjk4; SIDCC=AKEyXzW4bJqTUkGp5rVn4dCLpkOSBTTGvx9ZcSwENOar6BXq3aLM1SfiCdrwqrGkau06DS3VLms; __Secure-1PSIDCC=AKEyXzU8Ui48aV8JPrH26Mdcj1XOmo1IY8X0bt1Lbu3qjyh_ATEhZ1VamvuhNMVeqc46ItnqvDo; __Secure-3PSIDCC=AKEyXzVVvIm4IGejyp0zxCys0ticZx704f0grEFO5Oj-zOxY47gwkPJNDhwhIYHsepseBsv_4Qo; __Secure-1PSIDTS=sidts-CjEB7F1E_KwE2LrChyROweSd9Wvo_6gFNtI2N8GS35QeWqo5MhFvkLhGdAr9bWUBgsg6EAA; __Secure-3PSIDTS=sidts-CjEB7F1E_KwE2LrChyROweSd9Wvo_6gFNtI2N8GS35QeWqo5MhFvkLhGdAr9bWUBgsg6EAA; _ga_VWZPXDNJJB=GS1.1.1711364172.2.1.1711366407.0.0.0; _ga=GA1.3.266499014.1711329929; _gid=GA1.3.2049783146.1711329935; S=billing-ui-v3=dEKp_gZojR01F2gmg5YhKLRgMW4LEkqo:billing-ui-v3-efe=dEKp_gZojR01F2gmg5YhKLRgMW4LEkqo",
+                            "Cookie": "__utmz=84675036.1711659203.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utma=84675036.1424190668.1711659203.1711659203.1711717975.2; __utmc=84675036; __utmt=1; __utmb=84675036.5.10.1711717975; SID=g.a000fwjdPyiS_5fwzV6Cn9F6b1646EmLoDETMe_We1-KF3EUh_b-M3GeV2XkbjsK8ELcrln_MwACgYKAaESAQASFQHGX2Mi2ZVIjKL1Xg1go-jw4jUEsRoVAUF8yKrzV01LTSDw1eoRYjGSPIux0076; __Secure-1PSID=g.a000fwjdPyiS_5fwzV6Cn9F6b1646EmLoDETMe_We1-KF3EUh_b-xQLD6v9eUcKWJ9u-oKkwuAACgYKAe8SAQASFQHGX2MiEHwsOD5soOlwVDGZYcUynBoVAUF8yKq6CJNIleUccIYW7FQPHAcm0076; __Secure-3PSID=g.a000fwjdPyiS_5fwzV6Cn9F6b1646EmLoDETMe_We1-KF3EUh_b-FEuxGp-Bi7CnDdLafzROSgACgYKAdESAQASFQHGX2MiqUm-we3Bqvz4J19j1F5iJhoVAUF8yKpFGhg9Ua24m0-QaPcCS0bb0076; HSID=AWR9pmQL4A9yh7vCa; SSID=AuoPZtlJjEC1jB-BN; APISID=BVVCSeoJpRUo8UTf/AE-v7WqsnEnsdnv1F; SAPISID=9sgP3SUeuk9j7ZlH/Amzk0n87cJU5fnVC2; __Secure-1PAPISID=9sgP3SUeuk9j7ZlH/Amzk0n87cJU5fnVC2; __Secure-3PAPISID=9sgP3SUeuk9j7ZlH/Amzk0n87cJU5fnVC2; NID=512=tXenHtT0UCkIAlsI9MoGYE0eNtU9BkH_spCpqS993VKiNAoym0q_v_11keSPcZ-EnqYXZ4wKDwowSVX9Yd5SEx33-nA8B761uNe2j2ShSmfGGzC7cXDVLk4Ag0W0kkg2_KjDr8rtA2tXfuP89EQ3eDCmRQ4F1yCNo5uPdjHtvvQ; _gid=GA1.4.574535451.1711659205; _ga=GA1.4.1138266163.1711659204; _ga_VWZPXDNJJB=GS1.1.1711717975.2.1.1711718272.0.0.0; _gat_gtag_UA_4401283=1",
                             "Upgrade-Insecure-Requests": "1",
                             "Sec-Fetch-Dest": "document",
                             "Sec-Fetch-Mode": "navigate",
@@ -27,12 +24,61 @@ class Trends(object):
                             "Sec-Fetch-User": "?1"
                             }
         self.headers = headers
-        self.token = headers["token"]
+        self.token = "APP6_UEAAAAAZgcepkb7CY0HX7URNljrpb2SCIwIvkgV"
         self.api_wait = api_wait
 
-    def serach(self,keyword):
-        standardurl = "https://trends.google.com.br/trends/api/widgetdata/multiline?hl=pt-BR&tz=180&req={%22time%22:%222024-03-25T13\\:08\\:55+2024-03-26T13\\:08\\:55%22,%22resolution%22:%22EIGHT_MINUTE%22,%22locale%22:%22pt-BR%22,%22comparisonItem%22:[{%22geo%22:{%22country%22:%22BR%22},%22complexKeywordsRestriction%22:{%22keyword%22:[{%22type%22:%22BROAD%22,%22value%22:%22"+keyword+"%22}]}}],%22requestOptions%22:{%22property%22:%22%22,%22backend%22:%22CM%22,%22category%22:0},%22userConfig%22:{%22userType%22:%22USER_TYPE_LEGIT_USER%22}}&token="+self.token+"&tz=180"
-        pass
+    def serach5(self,keyword,token,useragent):
+        standardurl = "https://trends.google.com.br/trends/api/widgetdata/multiline"
+        array_keyword = []
+        for key in keyword:
+            array_keyword.append(
+                  {
+                     "geo":{
+
+                     },
+                     "complexKeywordsRestriction":{
+                        "keyword":[
+                           {
+                              "type":"BROAD",
+                              "value":key
+                           }
+                        ]
+                     }
+                  })
+
+        params = {
+            "hl" : "pt-BR",
+            "tz" : [180,180],
+            "req" : {
+               "time":"2004-01-01 2023-12-31",
+               "resolution":"MONTH",
+               "locale":"pt-BR",
+               "comparisonItem":array_keyword,
+               "requestOptions":{
+                  "property":"",
+                  "backend":"IZG",
+                  "category":0
+               },
+               "userConfig":{
+                  "userType": "USER_TYPE_LEGIT_USER"
+               }
+            },
+            "token" : self.token,
+        }
+
+        header = {
+            "accept": "application/json",
+            "User-Agent": useragent
+        }
+
+        time.sleep(self.api_wait + random.random())
+        response = requests.get(
+            standardurl,
+            params=params,
+            headers=self.headers
+        )
+        print(response.text)
+        return response.json()
 
 
     def payload(self, keyword):

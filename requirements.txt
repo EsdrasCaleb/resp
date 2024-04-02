@@ -34,3 +34,5 @@ wsproto==1.1.0
 mysql-connector-python
 pytrends
 webdriver
+user-agent
+free-proxy

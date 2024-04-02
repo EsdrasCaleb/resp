@@ -42,10 +42,11 @@ class db_paper(object):
             return paper_ob
         else:
             add_paper = ("INSERT INTO paper "
-                            "(name, paper_year, mounth, source_id, doi,paper_references) "
-                            "VALUES (%s, %s, %s, %s, %s, %s)")
+                            "(name, paper_year, mounth, source_id, doi,paper_references,total_citations) "
+                            "VALUES (%s, %s, %s, %s, %s, %s,%s)")
             querydata = (paper_data["title"],paper_data["year"],paper_data["mounth"],
-                                       paper_data["source_id"],paper_data["doi"],paper_data["references"])
+                                       paper_data["source_id"],paper_data["doi"],paper_data["references"],
+                                        paper_data["total_citations"])
             cursor.execute(add_paper, querydata)
             self.ctx.commit()
             paper_data["id"] = cursor.lastrowid
@@ -53,7 +54,18 @@ class db_paper(object):
             paper_data["name"] = paper_data["title"]
             cursor.close()
             return paper_data
+    def update_paper(self, paper_data):
+        if(not self.ctx.is_connected()):
+            self.connect()
+        cursor = self.ctx.cursor()
+        paper_ob = self.get_paper(paper_data['doi'])
+        if(paper_ob):
+            update_paper = "UPDATE paper SET paper_references = %s , total_citations = %s WHERE id = %s"
+            querydata = (paper_data["paper_references"],paper_data["total_citations"],paper_data["id"])
 
+            cursor.execute(update_paper, querydata)
+            self.ctx.commit()
+            cursor.close()
     def get_source(self,name):
         if (not self.ctx.is_connected()):
             self.connect()
