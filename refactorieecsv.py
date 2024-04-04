@@ -9,7 +9,7 @@ mounths = {
     "January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "August": 8,
     "September": 9, "October": 10, "November": 11, "December": 12
 }
-initialyear = 2011
+initialyear = 2008 #2013
 def get_mouth(string):
     array_ob = string.split(" ")
     if len(array_ob) ==3:
@@ -55,15 +55,18 @@ def cache_pile(pile, ieee, db):
                     paper["source_id"] = source_data["id"]
                     paper_ob = db.insert_paper(paper)
                     for term in row["IEEE Terms"].split(";"):
-                        term_ob = db.insert_keyword(term.strip())
-                        db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
-                    for term in row["Author Keywords"].split(";"):
-                        term_ob = db.insert_keyword(term.strip())
-                        db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
-                    if (not row["IEEE Terms"] and not row["Author Keywords"] and row["Mesh_Terms"]):
-                        for term in row["Mesh_Terms"].split(";"):
+                        if (term):
                             term_ob = db.insert_keyword(term.strip())
                             db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
+                    for term in row["Author Keywords"].split(";"):
+                        if (term):
+                            term_ob = db.insert_keyword(term.strip())
+                            db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
+                    if (not row["IEEE Terms"] and not row["Author Keywords"] and row["Mesh_Terms"]):
+                        for term in row["Mesh_Terms"].split(";"):
+                            if (term):
+                                term_ob = db.insert_keyword(term.strip())
+                                db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
                 else:
                     if paper_ob["total_citations"] != citations:
                         paper_ob["total_citations"] = citations
@@ -110,8 +113,10 @@ for ano in range(initialyear, 2021):
                                 citations += paperob["citationCount"]
                             if paperob["patentCitationCount"]:
                                 citations += paperob["patentCitationCount"]
-                            if paper["total_citations"] != citations:
-                                print("Atualizando citacoes " + paperob["doi"])
+                            if( not paper["total_citations"]):
+                                paper["total_citations"] = 0
+                            if citations and paper["total_citations"] < citations:
+                                print("Atualizando citacoes " + paperob["doi"],paper["total_citations"],citations)
                                 paper["total_citations"] = citations
                                 db.update_paper(paper)
                 if len(pile) >= 2000:

@@ -2,6 +2,8 @@ import mysql.connector
 
 
 
+
+
 def update_citations(paper_ob,sc,db):
     final_year = str(int(paper_ob["paper_year"]) + 2)
     citations_ob = db.get_citations(paper_ob["id"], final_year)
@@ -19,6 +21,44 @@ class db_paper(object):
     def connect(self):
         self.ctx = mysql.connector.connect(**self.config)
 
+    def insert_update_trends(self,keyword_id, year, mounth, value):
+        if (not self.ctx.is_connected()):
+            self.connect()
+        cursor = self.ctx.cursor()
+        atual_trend = self.get_trend(keyword_id, year, mounth)
+        if(atual_trend):
+            update_trend = "UPDATE keyword_trend SET value = %s  WHERE id = %s"
+            querydata = (value,atual_trend["id"])
+
+            cursor.execute(update_trend, querydata)
+            self.ctx.commit()
+            cursor.close()
+        else:
+            add_paper = ("INSERT INTO keyword_trend "
+                         "(keyword_id, trend_year, trend_mounth, value) "
+                         "VALUES (%s, %s, %s, %s)")
+            querydata = (keyword_id, year, mounth,
+                         value)
+            cursor.execute(add_paper, querydata)
+            self.ctx.commit()
+            atual_trend = {"id":cursor.lastrowid, "trend_year":year, "trend_mounth":mounth, "value":value}
+            cursor.close()
+        return atual_trend
+
+    def get_trend(self,keyword_id, year, mounth):
+        if (not self.ctx.is_connected()):
+            self.connect()
+        cursor = self.ctx.cursor()
+        query = ("SELECT * FROM keyword_trend "
+                 "WHERE keyword_id = %s and trend_year = %s and trend_mounth =%s")
+
+        cursor.execute(query, (keyword_id, year, mounth))
+        data = cursor.fetchall()
+        cursor.close()
+        if (len(data) == 0):
+            return None
+        else:
+            return dict(zip(cursor.column_names, data[0]))
     def get_paper(self,paper_doi):
         if (not self.ctx.is_connected()):
             self.connect()

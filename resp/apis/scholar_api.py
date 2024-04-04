@@ -16,39 +16,57 @@ class Scholar(object):
         self.year_dept = 2
         self.api_wait=1
         self.cokie = ""
+        self.backList = []
+        self.proxyIndex = 0
+        self.proxyArray = ['https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@union-us.tlsext.com:10799',
+                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@hide-fr.tlsext.com:10799',
+                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@octothorp-uk.tlsext.com:10799',
+                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@sympathy-us.tlsext.com:10799',
+                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@retirement-nl.tlsext.com:10799',
+                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@greet-sg.tlsext.com:10799',
+                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@consequently-sg.tlsext.com:10799',
+                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de103.uvpn.me:433',
+                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de105.uvpn.me:433',
+                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@it107.uvpn.me:433',
+                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@sp181.uvpn.me:433',
+                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ua133.uvpn.me:433',
+                    'https://access_token:CAESKAoIdG91Y2h2cG4QmKOZswYYmZW01QYiEGUyNzE4MGZlNWMyODE3MTUaIG613BLMX8XISgGTGE7uv4AGqrJF2wjoLEeSqfNI83Zj@ext-ms-ex-fr-par-pr-p-7.northghost.com:433',
+                    'https://access_token:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ext-ms-ex-gb-lon-pr-p-1.northghost.com:433',
+                    "socks5://ubhvovau:2ujo9w8p47l1@38.154.227.167:5868",
+                    "socks5://ubhvovau:2ujo9w8p47l1@185.199.229.156:7492",
+                    "socks5://ubhvovau:2ujo9w8p47l1@185.199.228.220:7300",
+                    "socks5://ubhvovau:2ujo9w8p47l1@185.199.231.45:8382",
+                    "socks5://ubhvovau:2ujo9w8p47l1@188.74.210.207:6286",
+                    "socks5://ubhvovau:2ujo9w8p47l1@188.74.183.10:8279",
+                    "socks5://ubhvovau:2ujo9w8p47l1@188.74.210.21:6100",
+                    "socks5://ubhvovau:2ujo9w8p47l1@45.155.68.129:8133",
+                    "socks5://ubhvovau:2ujo9w8p47l1@154.95.36.199:6893",
+                    "socks5://ubhvovau:2ujo9w8p47l1@45.94.47.66:8110",
+                    ''
+                 ]
         if cookie:
             self.cokie = cookie
             self.user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0"
         else:
             self.renew_proxy()
 
-    def renew_proxy(self):
+    def renew_proxy(self,useArray = True):
         proxy = None
-        proxyArray = ['https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@union-us.tlsext.com:10799',
-                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@hide-fr.tlsext.com:10799',
-                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@octothorp-uk.tlsext.com:10799',
-                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@sympathy-us.tlsext.com:10799',
-                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@retirement-nl.tlsext.com:10799',
-                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@greet-sg.tlsext.com:10799',
-                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@consequently-sg.tlsext.com:10799',
-                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de103.uvpn.me:433',
-                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de105.uvpn.me:433',
-                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@it107.uvpn.me:433',
-                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@sp181.uvpn.me:433',
-                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ua133.uvpn.me:433',
-                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ext-ms-ex-fr-par-pr-p-7.northghost.com:433',
-                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ext-ms-ex-gb-lon-pr-p-1.northghost.com:433',
-                 ]
-        while not proxy:
-            try:
-                if(random.random()>0.9):
-                    proxy = proxyArray[random.randint(0,len(proxyArray))]
-                else:
+        if(len(self.proxyArray)==len(self.backList)):
+            useArray = False
+        if(useArray):
+            proxy = self.proxyArray[self.proxyIndex]
+            self.proxyIndex += 1
+            if(self.proxyIndex >= len(self.proxyArray)):
+                self.proxyIndex = 0
+        else:
+            while not proxy:
+                try:
                     proxy = FreeProxy(https=True,rand=True).get()
-                    if proxy == self.proxy:
+                    if proxy in self.backList:
                         proxy = None
-            except Exception as e:
-                print(e)
+                except Exception as e:
+                    print(e)
         self.proxy = proxy
 
     def payload(self, keyword, st_page=0, pasize=10):
@@ -88,6 +106,7 @@ class Scholar(object):
                 soup = BeautifulSoup(response.text, "html.parser")
             except Exception as e:
                 print(e)
+                self.backList.append(self.proxy)
                 self.renew_proxy()
         return soup
 

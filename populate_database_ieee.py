@@ -52,15 +52,18 @@ if len(filenames) > 0:
                     paper["source_id"] = source_data["id"]
                     paper_ob = db.insert_paper(paper)
                     for term in row["IEEE Terms"].split(";"):
-                        term_ob = db.insert_keyword(term.strip())
-                        db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
-                    for term in row["Author Keywords"].split(";"):
-                        term_ob = db.insert_keyword(term.strip())
-                        db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
-                    if (not row["IEEE Terms"] and not row["Author Keywords"] and row["Mesh_Terms"]):
-                        for term in row["Mesh_Terms"].split(";"):
+                        if(term):
                             term_ob = db.insert_keyword(term.strip())
                             db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
+                    for term in row["Author Keywords"].split(";"):
+                        if (term):
+                            term_ob = db.insert_keyword(term.strip())
+                            db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
+                    if (not row["IEEE Terms"] and not row["Author Keywords"] and row["Mesh_Terms"]):
+                        for term in row["Mesh_Terms"].split(";"):
+                            if (term):
+                                term_ob = db.insert_keyword(term.strip())
+                                db.insert_keyword_paper(term_ob["id"], paper_ob["id"])
                 else:
                     if paper_ob["total_citations"] != citations:
                         print("Update citations " + str(paper_ob["id"]))

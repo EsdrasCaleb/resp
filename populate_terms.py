@@ -1,22 +1,103 @@
-from resp.apis.trends_api import Trends
+import time
 
-headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0",
-                            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-                            "Accept-Language": "pt-BR,pt;q=0.8,en-US;q=0.5,en;q=0.3",
-                            "Accept-Encoding": "gzip, deflate, br",
-                            "Connection": "keep-alive",
-                            "Cookie": "__utma=10102256.266499014.1711329929.1711329935.1711329935.1; __utmb=10102256.2.10.1711329935; __utmc=10102256; __utmz=10102256.1711329935.1.1.utmcsr=trends.google.com|utmccn=(referral)|utmcmd=referral|utmcct=/; __utmt=1; NID=512=SoHqkgDlcerKHS_czYHFoQSeheOk3y_HlKFxbwiw3Hq2TJXUJwVyJue1hCcwmG3bjlTe-AmucWdLC_T9sBbyKsmvHxVuUg0CYa85KiV_EJvd2NpiCg975h-gFh64SnvZb_egdsI33zmr_Ys_kXXpiQXhpuXjIO8AX7OUYXFN9pOJui-euZMqtG0ZXhE0-G2QQkWAUafJDiBCVFx0POzzlYYleR7f5TOep9rCoso-AZhrcy_qi8p4dQUmC3DzrUfR-H9jOhyr6UnwkmUVtwC4xBUHsK0-8taZn_lkkn8Q7DDI2iu_1oIYc7I0on-D4dOrDVtBwEvXeBXwGoNRtZ6Q_s8hxdfQp62Ru6-IRyCDzNRANlqVusGOSYJeGY5KMgEEfUyFbC-EeygbMLnrpvWvYSxKD8LNihuGuktnar4fSwalIqqK0fFaoQdAVEZueIuSTQy4V6s0C5p6X6O_4NkAO0yZoSimDjfDtzTdkVYRF6kIoBotlruaFErDM6ZaKM9Kern5e8jAqfzKucJdxg9BHqeiKs1a3YF8LR1jMa9-jK9JOjhKrY53ev62OBVLk_SFHr-yL-xSdZVmtpWxX-oq5XuTjXGkcSTJV5Qm8feTzIOmUV1QpReCLci50MQMlToo67YgLD-WQTRTfp5cHURxsNGbG6lIQXzrXNnO9mjRUoDIcbkawaYd7FqfRUaLNIQFS_Kn2M841Wz2vC9SvvC7u97m2Fii5qfb6C_vJLly38g1QSUyz-2Uf-Gws8L8sRXwTb9iKXuhy4a2ofDP9A3-AP6pePPMDpKkVGRNTY7i6Dln0-VvJvy2yaiLl-Tm-sROYF442Bn9urOsaQA4YsRPD9_zqvClhD4szW8bbJAfXp8UhKcyCuWXdNp4iG0mAuxxgVKkGMiCMNfmJRnUL4oY1PZtwkyXwrTRyKn6qytsX0PEbDZkKjkDKCA2nRNIibpdvSzgNXbpeid5b6HbEHfJR_M3nEWxtpLKwNwtZ2ewb6LAS_G_pzXUogbr9mrISpklWmfqIiSBpIPG9QGa6CF1AaYPygIX_JqpJ_E5uN_d47JiEGklLTfjPBPj8uujNZB2EjP6QS1lZGkT6d9oxyuHnXkMiYTaCqyoFvTyd5QGYvd9ASoU46amEMuU8o-JhN3toR8tw3YGX3xMz2BZ-0BCmCH9RHpgLzE; 1P_JAR=2024-03-25-01; SEARCH_SAMESITE=CgQI3ZoB; ANID=AHWqTUnMWdRx55Av9ABLl2GWIrI2RiR9RuoZKFufPgj97zX_cV5y63jVHDjwhQmy; AEC=Ae3NU9MPT8gahF1kgOwRZPQa1LkxMgOf_Hd4IX8JzSHj6b0MvQnlqPnn6g; SID=g.a000hwiw8mWaWz-JJQ7EkAAt3BqQ6_JarxYOiKw0HwYHVRnMbAze2ZhGJSsw3u96egHS8l_DnwACgYKARYSAQASFQHGX2MixOcpeIUvLCWscMbZ4BB3nRoVAUF8yKo4HBlWqp5Zqmsw1hwAzPpl0076; __Secure-1PSID=g.a000hwiw8mWaWz-JJQ7EkAAt3BqQ6_JarxYOiKw0HwYHVRnMbAzeycmqFnv3r3LaZHWgBr6H0AACgYKAZQSAQASFQHGX2MiMl4q32hh4G7BGfW00OhDkxoVAUF8yKr0vBT4pRACqqQusxGNwE2A0076; __Secure-3PSID=g.a000hwiw8mWaWz-JJQ7EkAAt3BqQ6_JarxYOiKw0HwYHVRnMbAzemSe-szt5jAMlFkrwBrPpHQACgYKAfkSAQASFQHGX2MiCAL6gHshElWP185oEkMZShoVAUF8yKrLdpM7PWxmEiN8EQRqFjbT0076; HSID=AvQssgkv8bTi_MJN7; SSID=A_PRG9X6FhoPiRmLL; APISID=1FQQAOetMu2Z_nqC/AB7a9Qt-I2eJzvrcu; SAPISID=OtI8AuS7T1j8PckO/AlrnvEvuaWMfkDjk4; __Secure-1PAPISID=OtI8AuS7T1j8PckO/AlrnvEvuaWMfkDjk4; __Secure-3PAPISID=OtI8AuS7T1j8PckO/AlrnvEvuaWMfkDjk4; SIDCC=AKEyXzXrpcY5-LuLCtB463NsQ-gsvwRRu7wlwvamtaPA5szTZ5I8RKSX4D1zJ-L8fQab-H-l4t4; __Secure-1PSIDCC=AKEyXzUZU-PcUwJSnPCZTNABV5ftpTMQi6cwVfYPLpnmEJl1KO8_P0hSa0NZxAekvV-nGO45sHI; __Secure-3PSIDCC=AKEyXzUuYcEk_OI4hLeekEkY7Kyogh1dDmQBn7Ila3Q5oPtLQ3nS0a-UvD21wKCl2ZjxZaN2cVY; __Secure-1PSIDTS=sidts-CjEB7F1E_G-dtTKmZM5TIuOwIESfN7dbELcpl3L-FUvqy3J-nmhIZ_FIecUhyiswk1miEAA; __Secure-3PSIDTS=sidts-CjEB7F1E_G-dtTKmZM5TIuOwIESfN7dbELcpl3L-FUvqy3J-nmhIZ_FIecUhyiswk1miEAA; S=billing-ui-v3=dEKp_gZojR01F2gmg5YhKLRgMW4LEkqo:billing-ui-v3-efe=dEKp_gZojR01F2gmg5YhKLRgMW4LEkqo; _ga_VWZPXDNJJB=GS1.1.1711329929.1.1.1711329942.0.0.0; _ga=GA1.3.266499014.1711329929; _gid=GA1.3.2049783146.1711329935; _gat_gtag_UA_4401283=1",
-                            "Upgrade-Insecure-Requests": "1",
-                            "Sec-Fetch-Dest": "document",
-                            "Sec-Fetch-Mode": "navigate",
-                            "Sec-Fetch-Site": "none",
-                            "Sec-Fetch-User": "?1"
-                            }
-td = Trends(3,headers)
-for term in paper["terms"]:
-    # check database is term exists id don't populate
-    result = td.query(term)
-    dic = result.to_dict()
-    for rr in dic[term]:
-        print(rr.year, rr.month)  # mes e ano
-        print(dic[term][rr])  # valor
+from resp.apis.acm_api import ACM
+from resp.apis.ieee_api import IEEE
+from resp.apis.scholar_api import Scholar
+from resp.apis.trends_api import Trends
+from pytrends.request import TrendReq
+import random
+import time
+import csv
+import json
+from datetime import datetime
+from db_paper import db_paper
+from fp.fp import FreeProxy
+
+db = db_paper(host="db", user="root", password="example", db="papersplease")
+db.connect()
+cursor = db.ctx.cursor()
+query = ("SELECT keyword.name as name,keyword.id as id,count(distinct keyword_paper.paper_id) as counter FROM keyword "
+         " join keyword_paper on keyword.id = keyword_paper.keyword_id "
+         " join citations on citations.paper_id=keyword_paper.paper_id "
+         " WHERE keyword.id not in (SELECT keyword_id from keyword_trend) and name<>'' "
+         " GROUP BY keyword.id,keyword.name"
+         " ORDER BY counter DESC")
+
+cursor.execute(query)
+dataG = cursor.fetchall()
+colums = cursor.column_names
+cursor.close()
+proxiOpen = ['http://pommetvh:o73b5ipcaqia@2.56.119.93:5074',
+                'http://pommetvh:o73b5ipcaqia@185.199.229.156:7492',
+                'http://pommetvh:o73b5ipcaqia@185.199.228.220:7300',
+                'http://pommetvh:o73b5ipcaqia@185.199.231.45:8382',
+                'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@credibility-ru.tlsext.com:10799',
+                'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@union-us.tlsext.com:10799',
+                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@hide-fr.tlsext.com:10799',
+                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@octothorp-uk.tlsext.com:10799',
+                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@sympathy-us.tlsext.com:10799',
+                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@retirement-nl.tlsext.com:10799',
+                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@greet-sg.tlsext.com:10799',
+                 'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@consequently-sg.tlsext.com:10799',
+                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de103.uvpn.me:433',
+                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de105.uvpn.me:433',
+                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@it107.uvpn.me:433',
+                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@sp181.uvpn.me:433',
+                 'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ua133.uvpn.me:433',
+                 'https://access_token:CAESKAoIdG91Y2h2cG4QmKOZswYYmZW01QYiEGUyNzE4MGZlNWMyODE3MTUaIG613BLMX8XISgGTGE7uv4AGqrJF2wjoLEeSqfNI83Zj@ext-ms-ex-fr-par-pr-p-7.northghost.com:433',
+                 'https://access_token:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ext-ms-ex-gb-lon-pr-p-1.northghost.com:433']
+proxies = [
+                "socks5://ubhvovau:2ujo9w8p47l1@38.154.227.167:5868",
+                "socks5://ubhvovau:2ujo9w8p47l1@185.199.229.156:7492",
+                "socks5://ubhvovau:2ujo9w8p47l1@185.199.228.220:7300",
+                "socks5://ubhvovau:2ujo9w8p47l1@185.199.231.45:8382",
+                "socks5://ubhvovau:2ujo9w8p47l1@188.74.210.207:6286",
+                "socks5://ubhvovau:2ujo9w8p47l1@188.74.183.10:8279",
+                "socks5://ubhvovau:2ujo9w8p47l1@188.74.210.21:6100",
+                "socks5://ubhvovau:2ujo9w8p47l1@45.155.68.129:8133",
+                "socks5://ubhvovau:2ujo9w8p47l1@154.95.36.199:6893",
+                "socks5://ubhvovau:2ujo9w8p47l1@45.94.47.66:8110",
+                ''
+            ]
+
+end = False
+index = 0
+
+blacklist = []
+
+proxy = None
+while not end:
+    term = dataG[index]
+    try:
+        while not proxy:
+            proxy = FreeProxy(https=True, rand=True).get()
+            if proxy in blacklist:
+                proxy = None
+            else:
+                pytrends = TrendReq(hl='pt-Br', tz=360, timeout=(10, 25), retries=0, backoff_factor=0,
+                                    proxies=[proxy])
+
+        termob = dict(zip(colums, term))
+        pytrends.build_payload(kw_list=[termob["name"]], timeframe=['2004-01-01 2022-01-01'])
+        result =json.loads(pytrends.interest_over_time().to_json())
+
+        keys = list(result.keys())
+
+        for data in result[keys[0]].keys():
+            dt_object = datetime.fromtimestamp(int(data)/1000)
+            print(termob["name"],termob["id"],dt_object.year, dt_object.month, result[keys[0]][data])
+            db.insert_update_trends(termob["id"], dt_object.year, dt_object.month, result[keys[0]][data])
+        index += 1
+        time.sleep(5+random.random())
+    except Exception as e:
+        print("error",e)
+        if(proxy):
+            blacklist.append(proxy)
+        print(blacklist)
+        proxy = None
+
+    if(index == len(dataG)):
+        end = True
+db.close()
+print("Done")
+print(blacklist)
