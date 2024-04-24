@@ -16,7 +16,3 @@ services:
     ports:
       - 9090:8080
 
-  metabase:
-    image: metabase/metabase
-    ports:
-      - 3400:3000

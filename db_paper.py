@@ -5,6 +5,7 @@ import mysql.connector
 
 
 def update_citations(paper_ob,sc,db):
+    db.connect()
     final_year = str(int(paper_ob["paper_year"]) + 2)
     citations_ob = db.get_citations(paper_ob["id"], final_year)
     if not citations_ob or not citations_ob["citations"]:
@@ -13,26 +14,57 @@ def update_citations(paper_ob,sc,db):
         if not citations_ob or citations_ob["citations"] != result:
             citations_ob = {"paper_id": paper_ob["id"], "citations": result, "final_year": final_year}
             citations_ob = db.insert_citations(citations_ob)
+    db.close()
     return citations_ob
 class db_paper(object):
     def __init__(self,host,db,password,user):
         self.config = {"host":host,"user":user,"password":password,"database":db}
 
+    def get_qualis(self,qualisname):
+        if (not self.ctx.is_connected()):
+            self.connect()
+        cursor = self.ctx.cursor()
+        query = "SELECT * from qualis where label = %s"
+        querydata = [qualisname]
+        cursor.execute(query, querydata)
+        result = cursor.fetchall()
+        if (len(result) == 0):
+            return None
+        else:
+            return dict(zip(cursor.column_names, result[0]))
+
+    def update_source_qualis(self,source_string,qualis,force=False):
+        if (not self.ctx.is_connected()):
+            self.connect()
+        cursor = self.ctx.cursor()
+        update_trend = ("UPDATE source SET qualis_id = %(qualisid)s  "
+                        "WHERE name like %(sourcestring)s "
+                        "and  %(qualisvalue)s> (SELECT q2.value from qualis q2 where q2.id= source.qualis_id)")
+        if(force):
+            update_trend = ("UPDATE source SET qualis_id = %(qualisid)s  "
+                            "WHERE name like %(sourcestring)s ")
+        querydata = {"qualisid":qualis["id"],"qualisvalue":qualis["value"], "sourcestring":source_string}
+
+        cursor.execute(update_trend, querydata)
+
+        self.ctx.commit()
+        cursor.close()
     def connect(self):
         self.ctx = mysql.connector.connect(**self.config)
 
-    def insert_update_trends(self,keyword_id, year, mounth, value):
+    def insert_update_trends(self,keyword_id, year, mounth, value, onlyinsert = False):
         if (not self.ctx.is_connected()):
             self.connect()
         cursor = self.ctx.cursor()
         atual_trend = self.get_trend(keyword_id, year, mounth)
         if(atual_trend):
-            update_trend = "UPDATE keyword_trend SET value = %s  WHERE id = %s"
-            querydata = (value,atual_trend["id"])
+            if not onlyinsert:
+                update_trend = "UPDATE keyword_trend SET value = %s  WHERE id = %s"
+                querydata = (value,atual_trend["id"])
 
-            cursor.execute(update_trend, querydata)
-            self.ctx.commit()
-            cursor.close()
+                cursor.execute(update_trend, querydata)
+                self.ctx.commit()
+                cursor.close()
         else:
             add_paper = ("INSERT INTO keyword_trend "
                          "(keyword_id, trend_year, trend_mounth, value) "

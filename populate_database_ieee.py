@@ -72,5 +72,5 @@ if len(filenames) > 0:
                 #update_citations(paper_ob,sc,db)
                 i+=1
         print("file ended "+file)
-        rename("ieeecsv/readed/"+file,"ieeecsv/readed2/"+file)
+        rename("ieeecsv/readed/"+file,"ieeecsv/readed2/c"+file)
     db.close()

@@ -2,11 +2,15 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import pandas as pd
+import urllib.parse
 from tqdm import tqdm
 import time
 import random
 import user_agent
 from fp.fp import FreeProxy
+from proxy_helper import proxy_helper
+
+
 
 class Scholar(object):
 
@@ -14,60 +18,38 @@ class Scholar(object):
         self.start_year = 2004
         self.end_year = 2021
         self.year_dept = 2
-        self.api_wait=1
+        self.api_wait=5
         self.cokie = ""
         self.backList = []
         self.proxyIndex = 0
-        self.proxyArray = ['https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@union-us.tlsext.com:10799',
-                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@hide-fr.tlsext.com:10799',
-                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@octothorp-uk.tlsext.com:10799',
-                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@sympathy-us.tlsext.com:10799',
-                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@retirement-nl.tlsext.com:10799',
-                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@greet-sg.tlsext.com:10799',
-                    'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@consequently-sg.tlsext.com:10799',
-                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de103.uvpn.me:433',
-                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de105.uvpn.me:433',
-                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@it107.uvpn.me:433',
-                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@sp181.uvpn.me:433',
-                    'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ua133.uvpn.me:433',
-                    'https://access_token:CAESKAoIdG91Y2h2cG4QmKOZswYYmZW01QYiEGUyNzE4MGZlNWMyODE3MTUaIG613BLMX8XISgGTGE7uv4AGqrJF2wjoLEeSqfNI83Zj@ext-ms-ex-fr-par-pr-p-7.northghost.com:433',
-                    'https://access_token:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ext-ms-ex-gb-lon-pr-p-1.northghost.com:433',
-                    "socks5://ubhvovau:2ujo9w8p47l1@38.154.227.167:5868",
-                    "socks5://ubhvovau:2ujo9w8p47l1@185.199.229.156:7492",
-                    "socks5://ubhvovau:2ujo9w8p47l1@185.199.228.220:7300",
-                    "socks5://ubhvovau:2ujo9w8p47l1@185.199.231.45:8382",
-                    "socks5://ubhvovau:2ujo9w8p47l1@188.74.210.207:6286",
-                    "socks5://ubhvovau:2ujo9w8p47l1@188.74.183.10:8279",
-                    "socks5://ubhvovau:2ujo9w8p47l1@188.74.210.21:6100",
-                    "socks5://ubhvovau:2ujo9w8p47l1@45.155.68.129:8133",
-                    "socks5://ubhvovau:2ujo9w8p47l1@154.95.36.199:6893",
-                    "socks5://ubhvovau:2ujo9w8p47l1@45.94.47.66:8110",
-                    ''
+        self.proxyArray = [
                  ]
+        self.helper = proxy_helper([
+            {"url": "https://advanced.name/freeproxy/66286f5e16bac?type=https", "protocol": "https", "json": False},
+            {"url": "https://advanced.name/freeproxy/66286f5e16bac?type=socks4", "json": False, "protocol": "socks4"},
+            {"url": "https://advanced.name/freeproxy/66286f5e16bac?type=socks5", "json": False, "protocol": "socks5"},
+            {"url": "https://advanced.name/freeproxy/66286f5e16bac?type=http", "json": False, "protocol": "http"}
+        ])
         if cookie:
             self.cokie = cookie
             self.user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0"
+            self.proxy = None
         else:
+            self.proxy = None
             self.renew_proxy()
 
-    def renew_proxy(self,useArray = True):
-        proxy = None
-        if(len(self.proxyArray)==len(self.backList)):
-            useArray = False
-        if(useArray):
-            proxy = self.proxyArray[self.proxyIndex]
+    def renew_proxy(self):
+        if (self.proxy):
+            self.helper.black_list_proxy(self.proxy)
+            #if(self.proxyArray and self.proxy in self.proxyArray):
+                #self.proxyArray.remove(self.proxy)
+        if (len(self.proxyArray) > 0):
+            self.proxy = self.proxyArray[self.proxyIndex]
             self.proxyIndex += 1
-            if(self.proxyIndex >= len(self.proxyArray)):
+            if self.proxyIndex >= len(self.proxyArray):
                 self.proxyIndex = 0
         else:
-            while not proxy:
-                try:
-                    proxy = FreeProxy(https=True,rand=True).get()
-                    if proxy in self.backList:
-                        proxy = None
-                except Exception as e:
-                    print(e)
-        self.proxy = proxy
+            self.proxy = self.helper.get_proxy()
 
     def payload(self, keyword, st_page=0, pasize=10):
 
@@ -75,18 +57,26 @@ class Scholar(object):
             ("q", keyword),
             ("as_ylo", str(self.start_year)),
             ("as_yhi", str(self.end_year)),
-            ("start", str(st_page*pasize)),
+            #("lookup",'0'),
+            #("as_sdt",'0,5')
+            #("start", str(st_page*pasize)),
         )
+        payload_str = urllib.parse.urlencode(params, safe=':+')
+
         time.sleep(self.api_wait+random.random())
         if(self.cokie):
             time.sleep(self.api_wait + random.random())
+            if(len(self.proxyArray)>0):
+                self.proxy = self.proxyArray[self.proxyIndex]
             response = requests.get(
                 "https://scholar.google.com/scholar",
-                params=params,
+                params=payload_str,
                 headers={
                     "accept": "application/json",
-                    "Cookie": self.cokie
+                    "Cookie": self.cokie,
+                    "User-Agent":self.user_agent,
                 },
+                timeout=30,
             )
             soup = BeautifulSoup(response.text, "html.parser")
             return soup
@@ -101,12 +91,13 @@ class Scholar(object):
                         "User-Agent": user_agent.generate_user_agent(),
                         # "Cookie": self.cokie
                     },
-                    proxies={"https": self.proxy}
+                    proxies={"https": self.proxy},
+                    timeout=30
                 )
                 soup = BeautifulSoup(response.text, "html.parser")
+                self.renew_proxy()
             except Exception as e:
                 print(e)
-                self.backList.append(self.proxy)
                 self.renew_proxy()
         return soup
 
@@ -120,35 +111,39 @@ class Scholar(object):
                     paper_year + self.year_dept),
                 headers={
                     "accept": "application/json",
-                    "User-Agent": user_agent.generate_user_agent()
-                    # "Cookie": self.cokie
+                    "User-Agent": user_agent.generate_user_agent(),
+                    "Cookie": self.cokie
                 },
-                proxies={"https": self.proxy}
+                timeout=30
             )
+
             citesoup = BeautifulSoup(response.text, "html.parser")
             search = citesoup.find(
                 "div", {"id": "gs_ab_md"}
             )
-        else:
-            while not search:
-                try:
-                    response = requests.get(
-                        "https://scholar.google.com" + citeurl + "&as_ylo=" + str(paper_year) + "&as_yhi=" + str(
-                            paper_year + self.year_dept),
-                        headers={
-                            "accept": "application/json",
-                            "User-Agent": user_agent.generate_user_agent()
-                            # "Cookie": self.cokie
-                        },
-                        proxies={"https": self.proxy}
-                    )
-                    citesoup = BeautifulSoup(response.text, "html.parser")
-                    search = citesoup.find(
-                        "div", {"id": "gs_ab_md"}
-                    )
-                except Exception as e:
-                    print(e)
-                    self.renew_proxy()
+        while not search:
+            try:
+                response = requests.get(
+                    "https://scholar.google.com" + citeurl + "&as_ylo=" + str(paper_year) + "&as_yhi=" + str(
+                        paper_year + self.year_dept),
+                    headers={
+                        "accept": "application/json",
+                        "User-Agent": user_agent.generate_user_agent()
+                        # "Cookie": self.cokie
+                    },
+                    proxies={"https": self.proxy},
+                    timeout=30
+                )
+                print("https://scholar.google.com" + citeurl + "&as_ylo=" + str(paper_year) + "&as_yhi=" + str(
+                        paper_year + self.year_dept))
+                citesoup = BeautifulSoup(response.text, "html.parser")
+                search = citesoup.find(
+                    "div", {"id": "gs_ab_md"}
+                )
+                self.renew_proxy()
+            except Exception as e:
+                print(e)
+                self.renew_proxy()
 
         
 
@@ -215,8 +210,8 @@ class Scholar(object):
         return all_pages
 
     def paper_citations(self,paper_name,paper_year):
-        self.start_year = paper_year
-        self.end_year = int(paper_year)+2
+        self.start_year = paper_year-1
+        self.end_year = int(paper_year)
 
         search = None
         while not search:
@@ -232,7 +227,7 @@ class Scholar(object):
                     if(hibar):
                         search = hibar[0].contents[4]["href"]
                     else:
-                        print("Proxy contaminado " + paper_name+" proxy "+self.proxy)
+                        print("Switiching to proxy")
                         self.renew_proxy()
             except Exception as e:
                 print(e)

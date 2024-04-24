@@ -16,24 +16,28 @@ class ACM(object):
             "January":1,"February":2,"March":3,"April":4,"May":5,"June":6,"July":7,"August":8,
             "September":9, "October":10, "November":11, "December":12
         }
+        self.proxies = ["socks5://ubhvovau:2ujo9w8p47l1@38.154.227.167:5868",
+                "socks5://ubhvovau:2ujo9w8p47l1@185.199.229.156:7492",
+                "socks5://ubhvovau:2ujo9w8p47l1@185.199.228.220:7300",
+                "socks5://ubhvovau:2ujo9w8p47l1@185.199.231.45:8382",
+                "socks5://ubhvovau:2ujo9w8p47l1@188.74.210.207:6286",
+                "socks5://ubhvovau:2ujo9w8p47l1@188.74.183.10:8279",
+                "socks5://ubhvovau:2ujo9w8p47l1@188.74.210.21:6100",
+                "socks5://ubhvovau:2ujo9w8p47l1@45.155.68.129:8133",
+                "socks5://ubhvovau:2ujo9w8p47l1@154.95.36.199:6893",
+                "socks5://ubhvovau:2ujo9w8p47l1@45.94.47.66:8110",
+                      ]
+        self.proxy = ''
+        self.proxy_index = 0
         self.renew_proxy()
 
+
     def renew_proxy(self):
-        self.proxy = ['https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@union-us.tlsext.com:10799',
-                      'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@hide-fr.tlsext.com:10799',
-                      'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@octothorp-uk.tlsext.com:10799',
-                      'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@sympathy-us.tlsext.com:10799',
-                      'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@retirement-nl.tlsext.com:10799',
-                      'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@greet-sg.tlsext.com:10799',
-                      'https://7b0c03df015c987fdb49e1300c94c8f3:YLyqHCDkTaUor5S2@consequently-sg.tlsext.com:10799',
-                      'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de103.uvpn.me:433',
-                      'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@de105.uvpn.me:433',
-                      'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@it107.uvpn.me:433',
-                      'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@sp181.uvpn.me:433',
-                      'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ua133.uvpn.me:433',
-                      'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ext-ms-ex-fr-par-pr-p-7.northghost.com:433',
-                      'https://UVPNv3-td6gqggyx0zvxpvzdobws6hzugfb60cd2mdelutg9lm91uv3pckev80h2wfb6322&12359007:yopiu4b87qctvj1gqui53eml04wrt35uott2qvodkar5g3e3du3b7w35qyrfg23f@ext-ms-ex-gb-lon-pr-p-1.northghost.com:433',
-                      ]
+        time.sleep(2000)
+        if(len(self.proxies) <= self.proxy_index):
+            self.proxy_index = 0
+        self.proxy = self.proxies[self.proxy_index]
+        self.proxy_index += 1
 
     def payload(self, keyword,st_page=0, pasize=50, start_year=2004, end_year=2023):
 
@@ -54,10 +58,13 @@ class ACM(object):
                     "https://dl.acm.org/action/doSearch",
                     params=params,
                     headers={"accept": "application/json"},
+                    verify=False,
+                    #proxies={"https": self.proxy,"http": self.proxy},
                 )
             except Exception as e:
                 print("error")
                 response = None
+                self.renew_proxy()
                 print(e)
 
         soup = BeautifulSoup(response.text, "html.parser")
@@ -68,7 +75,7 @@ class ACM(object):
         max_mouth=12,order="relevancy"):
 
         params = (
-            ("expand", "dl"),
+            ("expand", "dl"), #dl all
             ("AfterMonth",str(min_mouth)),
             ("AfterYear", str(start_year)),
             ("BeforeMonth", str(max_mouth)),
@@ -86,11 +93,13 @@ class ACM(object):
                     "https://dl.acm.org/action/doSearch",
                     params=params,
                     headers={"accept": "application/json"},
-                    proxies={"https": self.proxy[random.randint(0,len(self.proxy))]}
+                    verify=False,
+                    #proxies={"https": self.proxy,"http": self.proxy},
                 )
             except Exception as e:
                 print("error")
                 response = None
+                self.renew_proxy()
                 print(e)
         soup = BeautifulSoup(response.text, "html.parser")
         return soup
@@ -110,7 +119,7 @@ class ACM(object):
                 content_ = paper.find("h5", {"class": "issue-item__title"})
                 citation = paper.find("span", {"class": "citation"})
                 paper_url = content_.find("a", href=True)["href"]
-                all_papers.append({"url":paper_url,"citation":citation.text})
+                all_papers.append({"url":paper_url,"citation":citation.text.replace("Total Citations","").replace('.',"").replace(',',"")})
             except Exception as e:
                 print("error")
                 print(e)
@@ -124,7 +133,7 @@ class ACM(object):
                 response = requests.get(
                      "https://dl.acm.org"+paperurl,
                     headers={"accept": "application/json"},
-                    proxies={"https": self.proxy[random.randint(0, len(self.proxy))]}
+                    #proxies={"https": self.proxy[random.randint(0, len(self.proxy))]}
                 )
             except Exception as e:
                 print("error")
@@ -163,7 +172,7 @@ class ACM(object):
         all_pages = []
 
         for page in tqdm(range(max_pages)):
-            time.sleep(self.api_wait_min + random.random())
+            #time.sleep(self.api_wait_min + random.random())
             acm_soup = self.all_articles(
                 st_page=page+start_page, pasize=pagesize, start_year=min_year, end_year=max_year,
                 min_mouth=min_mouth,max_mouth=max_mouth,order=order
