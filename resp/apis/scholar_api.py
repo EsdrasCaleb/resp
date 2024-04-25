@@ -25,10 +25,10 @@ class Scholar(object):
         self.proxyArray = [
                  ]
         self.helper = proxy_helper([
-            {"url": "https://advanced.name/freeproxy/66286f5e16bac?type=https", "protocol": "https", "json": False},
-            {"url": "https://advanced.name/freeproxy/66286f5e16bac?type=socks4", "json": False, "protocol": "socks4"},
-            {"url": "https://advanced.name/freeproxy/66286f5e16bac?type=socks5", "json": False, "protocol": "socks5"},
-            {"url": "https://advanced.name/freeproxy/66286f5e16bac?type=http", "json": False, "protocol": "http"}
+            {"url": "https://advanced.name/freeproxy/6629fbb8ef5b5?type=https", "protocol": "https", "json": False},
+            {"url": "https://advanced.name/freeproxy/6629fbb8ef5b5?type=socks4", "json": False, "protocol": "socks4"},
+            {"url": "https://advanced.name/freeproxy/6629fbb8ef5b5?type=socks5", "json": False, "protocol": "socks5"},
+            {"url": "https://advanced.name/freeproxy/6629fbb8ef5b5?type=http", "json": False, "protocol": "http"}
         ])
         if cookie:
             self.cokie = cookie
@@ -41,9 +41,11 @@ class Scholar(object):
     def renew_proxy(self):
         if (self.proxy):
             self.helper.black_list_proxy(self.proxy)
-            #if(self.proxyArray and self.proxy in self.proxyArray):
-                #self.proxyArray.remove(self.proxy)
+            if(self.proxyArray and self.proxy in self.proxyArray):
+                self.proxyArray.remove(self.proxy)
         if (len(self.proxyArray) > 0):
+            if self.proxyIndex >= len(self.proxyArray):
+                self.proxyIndex = 0
             self.proxy = self.proxyArray[self.proxyIndex]
             self.proxyIndex += 1
             if self.proxyIndex >= len(self.proxyArray):
@@ -140,21 +142,19 @@ class Scholar(object):
                 search = citesoup.find(
                     "div", {"id": "gs_ab_md"}
                 )
+                part = search.find("div", {"class": "gs_ab_mdw"})
+
+                if (part.contents):
+                    paper_count = [int(i.translate({ord('.'): None})) for i in part.contents[0].split(" ") if
+                                   i.translate({ord('.'): None}).isdigit()][0]
+                else:
+                    paper_count = 0
                 self.renew_proxy()
             except Exception as e:
                 print(e)
+                search = None
                 self.renew_proxy()
 
-        
-
-        if not search :
-            print(citesoup)
-        part = search.find("div",{"class":"gs_ab_mdw"})
-
-        if(part.contents):
-            paper_count = [int(i.translate({ord('.'): None})) for i in part.contents[0].split(" ") if i.translate({ord('.'): None}).isdigit()][0]
-        else:
-            paper_count = 0
 
         return paper_count
 

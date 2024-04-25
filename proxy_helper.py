@@ -10,7 +10,7 @@ class proxy_helper(object):
                             "json": True, "protocol": ""},
     {"url": "https://proxylist.geonode.com/api/proxy-list?protocols=http%2Chttps&limit=500&page=1&sort_by=lastChecked&sort_type=desc", "json": True, "protocol": ""},
     {"url": "https://www.proxy-list.download/api/v1/get?type=https","json":False,"protocol":"https"},
-                        {"url": "https://www.proxy-list.download/api/v1/get?type=http", "json": False,
+    {"url": "https://www.proxy-list.download/api/v1/get?type=http", "json": False,
                          "protocol": "http"},
     {"url": "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks4.txt","json":False,"protocol":"socks4"},
     {"url": "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks5.txt","json":False,"protocol":"socks5"}]
@@ -57,14 +57,14 @@ class proxy_helper(object):
     def get_proxy(self):
         proxy = None
         try:
-            proxy = FreeProxy(https=True, rand=True).get()
+            proxy = FreeProxy(https=True).get()
             if(proxy in self.black_list):
                 proxy = None
         except Exception as e:
             print(e)
             proxy = None
         try:
-            proxy = FreeProxy(https=False, rand=True).get()
+            proxy = FreeProxy(google=True).get()
             if(proxy in self.black_list):
                 proxy = None
         except Exception as e:
