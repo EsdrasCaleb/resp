@@ -1,6 +1,11 @@
 from fp.fp import FreeProxy
+
 import requests
 import random
+import threading
+from proxy_checker import ProxyChecker
+
+
 
 class proxy_helper(object):
     def __init__(self,extra_source):
@@ -19,6 +24,7 @@ class proxy_helper(object):
         self.black_list = []
         self.list = []
         self.currentIndex = 0
+        self.checker = ProxyChecker()
 
     def get_requested(self,source, json=False, protocol="http"):
         data = requests.get(source)
@@ -39,7 +45,10 @@ class proxy_helper(object):
                 if (i):
                     proxy = protocol + "://" + i
                     if (proxy not in self.black_list):
-                        retorno.append(proxy)
+                        if(self.checker.send_query(proxy)):
+                            retorno.append(proxy)
+                        else:
+                            self.black_list.append(proxy)
         return retorno
 
     def load_list(self):
@@ -57,23 +66,44 @@ class proxy_helper(object):
     def get_proxy(self):
         proxy = None
         try:
-            proxy = FreeProxy(https=True).get()
-            if(proxy in self.black_list):
-                proxy = None
-        except Exception as e:
-            print(e)
-            proxy = None
-        try:
             proxy = FreeProxy(google=True).get()
-            if(proxy in self.black_list):
+            if (proxy in self.black_list):
                 proxy = None
         except Exception as e:
             print(e)
             proxy = None
-        if(not proxy):
-            if(len(self.list) == 0):
-                self.load_list()
-                self.currentIndex = 0
+        if (not proxy):
+            try:
+                proxy = FreeProxy(https=True).get()
+                if (proxy in self.black_list):
+                    proxy = None
+            except Exception as e:
+                print(e)
+                proxy = None
+        if (not proxy):
+            try:
+                proxy = FreeProxy(elite=True).get()
+                if (proxy in self.black_list):
+                    proxy = None
+            except Exception as e:
+                print(e)
+                proxy = None
+        if (not proxy):
+            try:
+                proxy = FreeProxy().get()
+            except Exception as e:
+                print(e)
+                proxy = None
+        if proxy:
+            return proxy
+        if(len(self.list) == 0):
+            print("new proxy")
+            thr = threading.Thread(target=self.load_list, args=(), kwargs={})
+            thr.start()
+            self.currentIndex = 0
+            if(not proxy):
+                thr.join()
+        if (len(self.list) > 0 and not proxy):
             if(self.currentIndex >= len(self.list)):
                 self.currentIndex = 0
             print("Proxy index :"+str(self.currentIndex))

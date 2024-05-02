@@ -22,13 +22,14 @@ class Scholar(object):
         self.cokie = ""
         self.backList = []
         self.proxyIndex = 0
+        self.rollcounter = 0
         self.proxyArray = [
                  ]
         self.helper = proxy_helper([
-            {"url": "https://advanced.name/freeproxy/6629fbb8ef5b5?type=https", "protocol": "https", "json": False},
-            {"url": "https://advanced.name/freeproxy/6629fbb8ef5b5?type=socks4", "json": False, "protocol": "socks4"},
-            {"url": "https://advanced.name/freeproxy/6629fbb8ef5b5?type=socks5", "json": False, "protocol": "socks5"},
-            {"url": "https://advanced.name/freeproxy/6629fbb8ef5b5?type=http", "json": False, "protocol": "http"}
+            {"url": "https://advanced.name/freeproxy/66323e2b26769?type=https", "protocol": "https", "json": False},
+            {"url": "https://advanced.name/freeproxy/66323e2b26769?type=socks4", "json": False, "protocol": "socks4"},
+            {"url": "https://advanced.name/freeproxy/66323e2b26769?type=socks5", "json": False, "protocol": "socks5"},
+            {"url": "https://advanced.name/freeproxy/66323e2b26769?type=http", "json": False, "protocol": "http"}
         ])
         if cookie:
             self.cokie = cookie
@@ -38,18 +39,20 @@ class Scholar(object):
             self.proxy = None
             self.renew_proxy()
 
-    def renew_proxy(self):
-        if (self.proxy):
+    def renew_proxy(self,error = False):
+        if (self.proxy and  self.proxy not in self.proxyArray):
             self.helper.black_list_proxy(self.proxy)
-            if(self.proxyArray and self.proxy in self.proxyArray):
-                self.proxyArray.remove(self.proxy)
-        if (len(self.proxyArray) > 0):
+        if self.proxy in self.proxyArray and error:
+            self.proxyArray.remove(self.proxy)
+            self.proxyIndex = max(self.proxyIndex,len(self.proxyArray)-1)
+
+        print(self.proxyIndex, self.rollcounter)
+        if len(self.proxyArray) > 0:
             if self.proxyIndex >= len(self.proxyArray):
                 self.proxyIndex = 0
             self.proxy = self.proxyArray[self.proxyIndex]
             self.proxyIndex += 1
-            if self.proxyIndex >= len(self.proxyArray):
-                self.proxyIndex = 0
+
         else:
             self.proxy = self.helper.get_proxy()
 
@@ -78,7 +81,7 @@ class Scholar(object):
                     "Cookie": self.cokie,
                     "User-Agent":self.user_agent,
                 },
-                timeout=30,
+                timeout=60, verify=False
             )
             soup = BeautifulSoup(response.text, "html.parser")
             return soup
@@ -94,13 +97,13 @@ class Scholar(object):
                         # "Cookie": self.cokie
                     },
                     proxies={"https": self.proxy},
-                    timeout=30
+                    timeout=60, verify=False
                 )
                 soup = BeautifulSoup(response.text, "html.parser")
                 self.renew_proxy()
             except Exception as e:
                 print(e)
-                self.renew_proxy()
+                self.renew_proxy(True)
         return soup
 
     def citations(self,citeurl,paper_year):
@@ -113,16 +116,24 @@ class Scholar(object):
                     paper_year + self.year_dept),
                 headers={
                     "accept": "application/json",
-                    "User-Agent": user_agent.generate_user_agent(),
+                    "User-Agent": self.user_agent,
                     "Cookie": self.cokie
                 },
-                timeout=30
+                timeout=60
+                , verify=False
             )
 
             citesoup = BeautifulSoup(response.text, "html.parser")
             search = citesoup.find(
                 "div", {"id": "gs_ab_md"}
             )
+            if search:
+                part = search.find("div", {"class": "gs_ab_mdw"})
+                if (part.contents):
+                    paper_count = [int(i.translate({ord('.'): None})) for i in part.contents[0].split(" ") if
+                                   i.translate({ord('.'): None}).isdigit()][0]
+                else:
+                    paper_count = 0
         while not search:
             try:
                 response = requests.get(
@@ -134,7 +145,7 @@ class Scholar(object):
                         # "Cookie": self.cokie
                     },
                     proxies={"https": self.proxy},
-                    timeout=30
+                    timeout=60, verify=False
                 )
                 print("https://scholar.google.com" + citeurl + "&as_ylo=" + str(paper_year) + "&as_yhi=" + str(
                         paper_year + self.year_dept))
@@ -153,7 +164,7 @@ class Scholar(object):
             except Exception as e:
                 print(e)
                 search = None
-                self.renew_proxy()
+                self.renew_proxy(True)
 
 
         return paper_count
@@ -227,11 +238,11 @@ class Scholar(object):
                     if(hibar):
                         search = hibar[0].contents[4]["href"]
                     else:
-                        print("Switiching to proxy")
-                        self.renew_proxy()
+                        print("Switiching to proxy",paper_name,paper_year)
+                        self.renew_proxy(True)
             except Exception as e:
                 print(e)
-                self.renew_proxy()
+                self.renew_proxy(True)
 
         retorno = self.citations(search, int(paper_year))
 

@@ -146,6 +146,7 @@ class ACM(object):
         for term in term_data:
             terms_array.append(term.text)
         paper_data = {"terms":terms_array}
+
         if(soup.find("h1", {"class": "citation__title"})):
             paper_data["title"] = soup.find("h1", {"class": "citation__title"}).text
             year_data = soup.find("span", {"class": "CitationCoverDate"}).text.split(" ")
@@ -153,6 +154,9 @@ class ACM(object):
             paper_data["mounth"] = self.mounths[year_data[1]]
             paper_data["origin"] = soup.find("span", {"class": "epub-section__title"}).text
             paper_data["doi"] = "/".join(paperurl.split("/")[2:])
+            paper_data["authors"] = len(soup.find_all("span", {"class": "loa__author-name"}))
+            pagedata = soup.find("div", {"class": "pageRange"}).text.replace("Pages ","").split("-")
+            paper_data["pages"] = int(pagedata[1])-int(pagedata[0])+1
             paper_data["references"] = len(soup.find_all("li", {"class": "references__item"}))
         else:
             print("https://dl.acm.org"+paperurl)
