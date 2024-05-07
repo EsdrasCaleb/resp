@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.decomposition import PCA
 
 from db_paper import db_paper
 import csv
@@ -75,7 +76,7 @@ def splited_tree(atributes,classes,split):
     print("Split " + str(split * 100) + "% Accuracy:", accuracy)
 
 def test_knm(atributes,classes):
-    knn = KNeighborsClassifier()
+    knn = KNeighborsClassifier(n_neighbors=1)
     knn.fit(atributes, classes)
     kf = KFold(n_splits=10, shuffle=True, random_state=int(time.time()%100))
     scores = cross_val_score(knn, atributes, classes, cv=kf)
@@ -90,7 +91,7 @@ def splitedt_knm(atributes,classes,porcent):
                                                         random_state=int(time.time()%100))
 
     # Create KNN classifier with k=5
-    knn = KNeighborsClassifier(n_neighbors=5)
+    knn = KNeighborsClassifier(n_neighbors=1)
 
     # Train the classifier
     knn.fit(X_train, y_train)
@@ -164,19 +165,96 @@ df_reduced.to_csv('checkpoint/redusida2.csv', index=False)
 print("Testando dados")
 test_knm(df_reduced.iloc[:, :-1],df_reduced.iloc[:, -1])
 
+print("Aplicando PCA")
+atribute = df.iloc[:, :-1]
+classe = df.iloc[:, -1]
+pca = PCA(n_components=0.95)
+reducedatributes = pca.fit_transform(atribute)
+test_knm(reducedatributes,classe)
+data_pca = pd.concat([pd.DataFrame(reducedatributes), classe], axis=1)
+data_pca.to_csv('checkpoint/redusida3.csv', index=False)
+print("===================")
+print("===================")
 print("Checkpoint 3")
+
+print("KNN")
+
 print("Testando dados completos")
-splitedt_knm(df.iloc[:, :-1],df.iloc[:, -1],0.1)
-splitedt_knm(df.iloc[:, :-1],df.iloc[:, -1],0.2)
-splitedt_knm(df.iloc[:, :-1],df.iloc[:, -1],0.3)
+atribute = df.iloc[:, :-1]
+classe = df.iloc[:, -1]
+splitedt_knm(atribute,classe,0.1)
+splitedt_knm(atribute,classe,0.2)
+splitedt_knm(atribute,classe,0.3)
 print("Testando dados reduzido 1")
-splitedt_knm(df_cleaned.iloc[:, :-1],df_cleaned.iloc[:, -1],0.1)
-splitedt_knm(df_cleaned.iloc[:, :-1],df_cleaned.iloc[:, -1],0.2)
-splitedt_knm(df_cleaned.iloc[:, :-1],df_cleaned.iloc[:, -1],0.3)
+atribute = df_cleaned.iloc[:, :-1]
+classe = df_cleaned.iloc[:, -1]
+splitedt_knm(atribute,classe,0.1)
+splitedt_knm(atribute,classe,0.2)
+splitedt_knm(atribute,classe,0.3)
 print("Testando dados reduzido 2")
-splitedt_knm(df_reduced.iloc[:, :-1],df_reduced.iloc[:, -1],0.1)
-splitedt_knm(df_reduced.iloc[:, :-1],df_reduced.iloc[:, -1],0.2)
-splitedt_knm(df_reduced.iloc[:, :-1],df_reduced.iloc[:, -1],0.3)
+atribute = df_reduced.iloc[:, :-1]
+classe = df_reduced.iloc[:, -1]
+splitedt_knm(atribute,classe,0.1)
+splitedt_knm(atribute,classe,0.2)
+splitedt_knm(atribute,classe,0.3)
+print("Testando dados reduzido 3")
+classe = df.iloc[:, -1]
+splitedt_knm(reducedatributes,classe,0.1)
+splitedt_knm(reducedatributes,classe,0.2)
+splitedt_knm(reducedatributes,classe,0.3)
+print("******")
+print("Arvore de Decisão")
+print("Testando dados completos")
+atribute = df.iloc[:, :-1]
+classe = df.iloc[:, -1]
+splited_tree(atribute,classe,0.1)
+splited_tree(atribute,classe,0.2)
+splited_tree(atribute,classe,0.3)
+print("Testando dados reduzido 1")
+atribute = df_cleaned.iloc[:, :-1]
+classe = df_cleaned.iloc[:, -1]
+splited_tree(atribute,classe,0.1)
+splited_tree(atribute,classe,0.2)
+splited_tree(atribute,classe,0.3)
+print("Testando dados reduzido 2")
+atribute = df_reduced.iloc[:, :-1]
+classe = df_reduced.iloc[:, -1]
+splited_tree(atribute,classe,0.1)
+splited_tree(atribute,classe,0.2)
+splited_tree(atribute,classe,0.3)
+print("Testando dados reduzido 3")
+classe = df.iloc[:, -1]
+splited_tree(reducedatributes,classe,0.1)
+splited_tree(reducedatributes,classe,0.2)
+splited_tree(reducedatributes,classe,0.3)
+print("******")
+print("Naive Baies")
+print("Testando dados completos")
+atribute = df.iloc[:, :-1]
+classe = df.iloc[:, -1]
+splited_naive(atribute,classe,0.1)
+splited_naive(atribute,classe,0.2)
+splited_naive(atribute,classe,0.3)
+print("Testando dados reduzido 1")
+atribute = df_cleaned.iloc[:, :-1]
+classe = df_cleaned.iloc[:, -1]
+splited_naive(atribute,classe,0.1)
+splited_naive(atribute,classe,0.2)
+splited_naive(atribute,classe,0.3)
+print("Testando dados reduzido 2")
+atribute = df_reduced.iloc[:, :-1]
+classe = df_reduced.iloc[:, -1]
+splited_naive(atribute,classe,0.1)
+splited_naive(atribute,classe,0.2)
+splited_naive(atribute,classe,0.3)
+print("Testando dados reduzido 3")
+classe = df.iloc[:, -1]
+splited_naive(reducedatributes,classe,0.1)
+splited_naive(reducedatributes,classe,0.2)
+splited_naive(reducedatributes,classe,0.3)
+print("******")
+print("MLP")
+
 #fig, ax = plt.subplots()
 #boxplot = df.boxplot(ax=ax,column=['peso_fonte'])
 #plt.show()
