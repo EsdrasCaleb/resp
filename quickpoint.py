@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
 
 from db_paper import db_paper
 import csv
@@ -153,6 +154,13 @@ print("Removendo da base outliners usando treshhold 3 e o pandas")
 df_cleaned = df
 for colum in df.columns:
     if(colum != "class"):
+        plt.figure(figsize=(8, 6))
+        plt.boxplot(data[column])
+        plt.title(f'Box plot of {column}')
+        boxplot = df.boxplot(ax=ax,column=['peso_fonte'])  
+        plt.xlabel('Feature')
+        plt.ylabel('Value')
+        plt.savefig(f'checkpoint/boxplot_{column}.png')
         df_cleaned = remove_outliers(df_cleaned, colum)
 df_cleaned.to_csv('checkpoint/redusida1.csv', index=False)
 print("Testando dados")
