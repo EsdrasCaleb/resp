@@ -52,17 +52,18 @@ class db_paper(object):
     def connect(self):
         self.ctx = mysql.connector.connect(**self.config)
 
-    def query(self,query,params):
+    def query(self,query,params=[]):
         if (not self.ctx.is_connected()):
             self.connect()
         cursor = self.ctx.cursor()
         cursor.execute(query, (params))
-        data = cursor.fetchall()
+        data = []
+        row = cursor.fetchone()
+        while row is not None:
+            data.append(dict(zip(cursor.column_names, row)))
+            row = cursor.fetchone()
         cursor.close()
-        if (len(data) == 0):
-            return None
-        else:
-            return dict(zip(cursor.column_names, data[0]))
+        return data
 
     def insert_update_trends(self,keyword_id, year, mounth, value, onlyinsert = False):
         if (not self.ctx.is_connected()):

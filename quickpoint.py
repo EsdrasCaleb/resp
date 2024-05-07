@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
 from sklearn import svm
+from db_paper import db_paper
+import csv
 
 
 query = ("SELECT paper_references,"
@@ -20,7 +22,7 @@ query = ("SELECT paper_references,"
                 "'irrelevant' "
             "else "
                 "'relevant' "
-            "END"
+            "END "
             "as class "
         "FROM paper p "
         "left JOIN keyword_paper kp on p.id = kp.paper_id "
@@ -33,6 +35,21 @@ query = ("SELECT paper_references,"
         "GROUP BY p.id,paper_references,c.citations "
 )
 db = db_paper(host="db", user="root", password="example", db="papersplease")
-fig, ax = plt.subplots()
-boxplot = df.boxplot(ax=ax,column=['peso_fonte'])  
-plt.show()
+db.connect()
+data = db.query(query)
+header = data[0].keys()
+with open("checkpoint/data.csv", 'w', newline='') as csvfile:
+    # Create a CSV writer object
+    writer = csv.DictWriter(csvfile, fieldnames=header)
+
+    # Write header
+    writer.writeheader()
+
+    # Write each dictionary as a row
+    for row in data:
+        writer.writerow(row)
+
+
+#fig, ax = plt.subplots()
+#boxplot = df.boxplot(ax=ax,column=['peso_fonte'])
+#plt.show()
