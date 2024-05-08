@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import cross_val_score, KFold
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -26,55 +27,41 @@ def remove_outliers(df, column, threshold=3):
 
     return df_cleaned
 
+
+def tenfold(classifier,attributes,classe):
+    kf = KFold(n_splits=10, shuffle=True, random_state=42)
+    scores = cross_val_score(classifier, attributes, classe, cv=kf)
+    return str(scores.mean())
+
+
+def splited(classifier,attributes,classe,split):
+    X_train, X_test, y_train, y_test = train_test_split(attributes, classe, test_size=split,
+                                                        random_state=42)
+    classifier.fit(X_train, y_train)
+    y_pred = classifier.predict(X_test)
+
+    # Evaluate accuracy
+    accuracy = accuracy_score(y_test, y_pred)
+    return str(accuracy)
 def test_naive(attributes,classes):
     nb_classifier = GaussianNB()
-    kf = KFold(n_splits=10, shuffle=True, random_state=int(time.time() % 100))
-    scores = cross_val_score(nb_classifier, attributes, classes, cv=kf)
-    print("Mean Accuracy:", scores.mean())
+    accurace = tenfold(nb_classifier, attributes, classes)
+    print("Mean Accuracy:", accurace)
 
 def splited_naive(atributes,classes,split):
-    X_train, X_test, y_train, y_test = train_test_split(atributes, classes, test_size=split,
-                                                        random_state=int(time.time() % 100))
     nb_classifier = GaussianNB()
-    nb_classifier.fit(X_train, y_train)
-    y_pred = nb_classifier.predict(X_test)
-
-    # Evaluate accuracy
-    accuracy = accuracy_score(y_test, y_pred)
-    print("Split " + str(split * 100) + "% Accuracy:", accuracy)
+    acuracy = splited(nb_classifier, atributes, classes, split)
+    print("Split " + str(split * 100) + "% Accuracy:", acuracy)
 
 def test_tree(atributes,classes):
-    dt_classifier = DecisionTreeClassifier(random_state=int(time.time() % 100))
-
-    # Define 10-fold cross-validation
-    kf = KFold(n_splits=10, shuffle=True, random_state=int(time.time() % 100))
-
-    # Perform 10-fold cross-validation
-    scores = cross_val_score(dt_classifier, atributes, classes, cv=kf)
-
-    # Print accuracy scores for each fold
-    #for i, score in enumerate(scores, 1):
-    #    print(f"Fold {i}: {score}")
-
-    # Calculate and print mean accuracy
-    print("Mean Accuracy:", scores.mean())
+    dt_classifier = DecisionTreeClassifier(random_state=42)
+    accurace = tenfold(dt_classifier, atributes, classes)
+    print("Mean Accuracy:", accurace)
 
 def splited_tree(atributes,classes,split):
-    X_train, X_test, y_train, y_test = train_test_split(atributes, classes, test_size=split,
-                                                        random_state=int(time.time() % 100))
-
-    # Create KNN classifier with k=5
-    dt_classifier = DecisionTreeClassifier(random_state=int(time.time() % 100))
-
-    # Train the classifier
-    dt_classifier.fit(X_train, y_train)
-
-    # Make predictions on the testing set
-    y_pred = dt_classifier.predict(X_test)
-
-    # Evaluate accuracy
-    accuracy = accuracy_score(y_test, y_pred)
-    print("Split " + str(split * 100) + "% Accuracy:", accuracy)
+    dt_classifier = DecisionTreeClassifier(random_state=42)
+    acuracy =splited(dt_classifier, atributes, classes, split)
+    print("Split " + str(split * 100) + "% Accuracy:", acuracy)
 
 def test_knm(atributes,classes,neighbors=1):
     knn = KNeighborsClassifier(n_neighbors=neighbors)
@@ -85,7 +72,7 @@ def test_knm(atributes,classes,neighbors=1):
         #print(f"Fold {i}: {score}")
 
     # Calculate and print mean accuracy
-    print("10 Fold Accuracy:", scores.mean())
+    print("KNN acuraci:", round(scores.mean()*100,2))
 
 def splitedt_knm(atributes,classes,porcent,neighbors=1):
     X_train, X_test, y_train, y_test = train_test_split(atributes, classes, test_size=porcent,
@@ -102,7 +89,7 @@ def splitedt_knm(atributes,classes,porcent,neighbors=1):
 
     # Evaluate accuracy
     accuracy = accuracy_score(y_test, y_pred)
-    print("Split "+str(porcent*100)+"% Accuracy:", accuracy)
+    print("Split "+str(porcent*100)+"% Accuracy:", round(accuracy*100,2),"%")
 
 if(not os.path.isfile("checkpoint/data.csv")):
     query = ("SELECT paper_references,"
@@ -145,160 +132,61 @@ if(not os.path.isfile("checkpoint/data.csv")):
         # Write each dictionary as a row
         for row in data:
             writer.writerow(row)
+
 print("Checkpoint 2")
 df = pd.read_csv('checkpoint/data.csv')
-print("Testando dados")
-atribute = df.iloc[:, :-1]
-classe = df.iloc[:, -1]
-test_knm(atribute,classe)
-test_tree(atribute,classe)
 
 print("Removendo da base outliners usando treshhold 3 e o pandas")
-
-df_cleaned = df
-for colum in df.columns:
-    if(colum != "class"):
-        plt.figure(figsize=(8, 6))
-        plt.boxplot(df[colum])
-        plt.title(f'Box plot of {colum}') 
-        plt.xlabel('Feature')
-        plt.ylabel('Value')
-        plt.savefig(f'checkpoint/boxplot_{colum}.png')
-        df_cleaned = remove_outliers(df_cleaned, colum)
-df_cleaned.to_csv('checkpoint/redusida1.csv', index=False)
-print("Testando dados")
-atribute = df_cleaned.iloc[:, :-1]
-classe = df_cleaned.iloc[:, -1]
-test_knm(atribute,classe)
-test_tree(atribute,classe)
-
-print("Removendo os artibutos delta trends")
-columns_to_remove = ['max_delta', 'avg_delta',"min_delta"]
-df_reduced = df.drop(columns=columns_to_remove)
-df_reduced.to_csv('checkpoint/redusida2.csv', index=False)
-print("Testando dados")
-atribute = df_reduced.iloc[:, :-1]
-classe = df_reduced.iloc[:, -1]
-test_knm(atribute,classe)
-test_tree(atribute,classe)
-
-print("Aplicando PCA")
-atribute = df.iloc[:, :-1]
-classe = df.iloc[:, -1]
-pca = PCA(n_components=0.95)
-reducedatributes = pca.fit_transform(atribute)
-test_knm(reducedatributes,classe)
-test_tree(reducedatributes,classe)
-data_pca = pd.concat([pd.DataFrame(reducedatributes), classe], axis=1)
-data_pca.to_csv('checkpoint/redusida3.csv', index=False)
+if(not os.path.isfile("checkpoint/redusida1.csv")):
+    print("Testando dados")
+    atribute = df.iloc[:, :-1]
+    classe = df.iloc[:, -1]
+    test_knm(atribute, classe)
+    test_tree(atribute, classe)
+    df_cleaned = df
+    for colum in df.columns:
+        if(colum != "class"):
+            plt.figure(figsize=(8, 6))
+            plt.boxplot(df[colum])
+            plt.title(f'Box plot of {colum}')
+            plt.xlabel('Feature')
+            plt.ylabel('Value')
+            plt.savefig(f'checkpoint/boxplot_{colum}.png')
+            df_cleaned = remove_outliers(df_cleaned, colum)
+    df_cleaned.to_csv('checkpoint/redusida1.csv', index=False)
+    print("Testando dados")
+    atribute = df_cleaned.iloc[:, :-1]
+    classe = df_cleaned.iloc[:, -1]
+    test_knm(atribute,classe)
+    test_tree(atribute,classe)
+else:
+    df_cleaned = pd.read_csv('checkpoint/redusida1.csv')
+if(not os.path.isfile("checkpoint/redusida2.csv")):
+    print("Removendo os artibutos delta trends")
+    columns_to_remove = ['max_delta', 'avg_delta',"min_delta"]
+    df_reduced = df.drop(columns=columns_to_remove)
+    df_reduced.to_csv('checkpoint/redusida2.csv', index=False)
+    print("Testando dados")
+    atribute = df_reduced.iloc[:, :-1]
+    classe = df_reduced.iloc[:, -1]
+    test_knm(atribute,classe)
+    test_tree(atribute,classe)
+else:
+    df_reduced = pd.read_csv('checkpoint/redusida2.csv')
+if(not os.path.isfile("checkpoint/redusida3.csv")):
+    print("Aplicando PCA")
+    atribute = df.iloc[:, :-1]
+    classe = df.iloc[:, -1]
+    pca = PCA(n_components=0.95)
+    reducedatributes = pca.fit_transform(atribute)
+    test_knm(reducedatributes,classe)
+    test_tree(reducedatributes,classe)
+    data_pca = pd.concat([pd.DataFrame(reducedatributes), classe], axis=1)
+    data_pca.to_csv('checkpoint/redusida3.csv', index=False)
+else:
+    data_pca = pd.read_csv('checkpoint/redusida3.csv')
 print("===================")
 print("===================")
 print("Checkpoint 3")
 
-print("KNN")
-
-print("Testando dados completos")
-atribute = df.iloc[:, :-1]
-classe = df.iloc[:, -1]
-splitedt_knm(atribute,classe,0.1)
-splitedt_knm(atribute,classe,0.2)
-splitedt_knm(atribute,classe,0.3)
-
-print("K 3")
-test_knm(atribute,classe,3)
-splitedt_knm(atribute,classe,0.1,3)
-splitedt_knm(atribute,classe,0.2,3)
-splitedt_knm(atribute,classe,0.3,3)
-
-print("K 5")
-test_knm(atribute,classe,5)
-splitedt_knm(atribute,classe,0.1,5)
-splitedt_knm(atribute,classe,0.2,5)
-splitedt_knm(atribute,classe,0.3,5)
-
-print("K 7")
-test_knm(atribute,classe,7)
-splitedt_knm(atribute,classe,0.1,7)
-splitedt_knm(atribute,classe,0.2,7)
-splitedt_knm(atribute,classe,0.3,7)
-
-print("K 9")
-test_knm(atribute,classe,9)
-splitedt_knm(atribute,classe,0.1,9)
-splitedt_knm(atribute,classe,0.2,9)
-splitedt_knm(atribute,classe,0.3,9)
-
-exit()
-print("Testando dados reduzido 1")
-atribute = df_cleaned.iloc[:, :-1]
-classe = df_cleaned.iloc[:, -1]
-splitedt_knm(atribute,classe,0.1)
-splitedt_knm(atribute,classe,0.2)
-splitedt_knm(atribute,classe,0.3)
-print("Testando dados reduzido 2")
-atribute = df_reduced.iloc[:, :-1]
-classe = df_reduced.iloc[:, -1]
-splitedt_knm(atribute,classe,0.1)
-splitedt_knm(atribute,classe,0.2)
-splitedt_knm(atribute,classe,0.3)
-print("Testando dados reduzido 3")
-classe = df.iloc[:, -1]
-splitedt_knm(reducedatributes,classe,0.1)
-splitedt_knm(reducedatributes,classe,0.2)
-splitedt_knm(reducedatributes,classe,0.3)
-print("******")
-print("Arvore de Decisão")
-print("Testando dados completos")
-atribute = df.iloc[:, :-1]
-classe = df.iloc[:, -1]
-splited_tree(atribute,classe,0.1)
-splited_tree(atribute,classe,0.2)
-splited_tree(atribute,classe,0.3)
-print("Testando dados reduzido 1")
-atribute = df_cleaned.iloc[:, :-1]
-classe = df_cleaned.iloc[:, -1]
-splited_tree(atribute,classe,0.1)
-splited_tree(atribute,classe,0.2)
-splited_tree(atribute,classe,0.3)
-print("Testando dados reduzido 2")
-atribute = df_reduced.iloc[:, :-1]
-classe = df_reduced.iloc[:, -1]
-splited_tree(atribute,classe,0.1)
-splited_tree(atribute,classe,0.2)
-splited_tree(atribute,classe,0.3)
-print("Testando dados reduzido 3")
-classe = df.iloc[:, -1]
-splited_tree(reducedatributes,classe,0.1)
-splited_tree(reducedatributes,classe,0.2)
-splited_tree(reducedatributes,classe,0.3)
-print("******")
-print("Naive Baies")
-print("Testando dados completos")
-atribute = df.iloc[:, :-1]
-classe = df.iloc[:, -1]
-splited_naive(atribute,classe,0.1)
-splited_naive(atribute,classe,0.2)
-splited_naive(atribute,classe,0.3)
-print("Testando dados reduzido 1")
-atribute = df_cleaned.iloc[:, :-1]
-classe = df_cleaned.iloc[:, -1]
-splited_naive(atribute,classe,0.1)
-splited_naive(atribute,classe,0.2)
-splited_naive(atribute,classe,0.3)
-print("Testando dados reduzido 2")
-atribute = df_reduced.iloc[:, :-1]
-classe = df_reduced.iloc[:, -1]
-splited_naive(atribute,classe,0.1)
-splited_naive(atribute,classe,0.2)
-splited_naive(atribute,classe,0.3)
-print("Testando dados reduzido 3")
-classe = df.iloc[:, -1]
-splited_naive(reducedatributes,classe,0.1)
-splited_naive(reducedatributes,classe,0.2)
-splited_naive(reducedatributes,classe,0.3)
-print("******")
-print("MLP")
-
-#fig, ax = plt.subplots()
-#boxplot = df.boxplot(ax=ax,column=['peso_fonte'])
-#plt.show()
+mlp_classifier = MLPClassifier(random_state=42)
