@@ -76,8 +76,8 @@ def splited_tree(atributes,classes,split):
     accuracy = accuracy_score(y_test, y_pred)
     print("Split " + str(split * 100) + "% Accuracy:", accuracy)
 
-def test_knm(atributes,classes):
-    knn = KNeighborsClassifier(n_neighbors=1)
+def test_knm(atributes,classes,neighbors=1):
+    knn = KNeighborsClassifier(n_neighbors=neighbors)
     knn.fit(atributes, classes)
     kf = KFold(n_splits=10, shuffle=True, random_state=int(time.time()%100))
     scores = cross_val_score(knn, atributes, classes, cv=kf)
@@ -87,12 +87,12 @@ def test_knm(atributes,classes):
     # Calculate and print mean accuracy
     print("10 Fold Accuracy:", scores.mean())
 
-def splitedt_knm(atributes,classes,porcent):
+def splitedt_knm(atributes,classes,porcent,neighbors=1):
     X_train, X_test, y_train, y_test = train_test_split(atributes, classes, test_size=porcent,
                                                         random_state=int(time.time()%100))
 
     # Create KNN classifier with k=5
-    knn = KNeighborsClassifier(n_neighbors=1)
+    knn = KNeighborsClassifier(n_neighbors=neighbors)
 
     # Train the classifier
     knn.fit(X_train, y_train)
@@ -148,30 +148,39 @@ if(not os.path.isfile("checkpoint/data.csv")):
 print("Checkpoint 2")
 df = pd.read_csv('checkpoint/data.csv')
 print("Testando dados")
-test_knm(df.iloc[:, :-1],df.iloc[:, -1] )
+atribute = df.iloc[:, :-1]
+classe = df.iloc[:, -1]
+test_knm(atribute,classe)
+test_tree(atribute,classe)
+
 print("Removendo da base outliners usando treshhold 3 e o pandas")
 
 df_cleaned = df
 for colum in df.columns:
     if(colum != "class"):
         plt.figure(figsize=(8, 6))
-        plt.boxplot(data[column])
-        plt.title(f'Box plot of {column}')
-        boxplot = df.boxplot(ax=ax,column=['peso_fonte'])  
+        plt.boxplot(df[colum])
+        plt.title(f'Box plot of {colum}') 
         plt.xlabel('Feature')
         plt.ylabel('Value')
-        plt.savefig(f'checkpoint/boxplot_{column}.png')
+        plt.savefig(f'checkpoint/boxplot_{colum}.png')
         df_cleaned = remove_outliers(df_cleaned, colum)
 df_cleaned.to_csv('checkpoint/redusida1.csv', index=False)
 print("Testando dados")
-test_knm(df_cleaned.iloc[:, :-1],df_cleaned.iloc[:, -1])
+atribute = df_cleaned.iloc[:, :-1]
+classe = df_cleaned.iloc[:, -1]
+test_knm(atribute,classe)
+test_tree(atribute,classe)
 
 print("Removendo os artibutos delta trends")
 columns_to_remove = ['max_delta', 'avg_delta',"min_delta"]
 df_reduced = df.drop(columns=columns_to_remove)
 df_reduced.to_csv('checkpoint/redusida2.csv', index=False)
 print("Testando dados")
-test_knm(df_reduced.iloc[:, :-1],df_reduced.iloc[:, -1])
+atribute = df_reduced.iloc[:, :-1]
+classe = df_reduced.iloc[:, -1]
+test_knm(atribute,classe)
+test_tree(atribute,classe)
 
 print("Aplicando PCA")
 atribute = df.iloc[:, :-1]
@@ -179,6 +188,7 @@ classe = df.iloc[:, -1]
 pca = PCA(n_components=0.95)
 reducedatributes = pca.fit_transform(atribute)
 test_knm(reducedatributes,classe)
+test_tree(reducedatributes,classe)
 data_pca = pd.concat([pd.DataFrame(reducedatributes), classe], axis=1)
 data_pca.to_csv('checkpoint/redusida3.csv', index=False)
 print("===================")
@@ -193,6 +203,32 @@ classe = df.iloc[:, -1]
 splitedt_knm(atribute,classe,0.1)
 splitedt_knm(atribute,classe,0.2)
 splitedt_knm(atribute,classe,0.3)
+
+print("K 3")
+test_knm(atribute,classe,3)
+splitedt_knm(atribute,classe,0.1,3)
+splitedt_knm(atribute,classe,0.2,3)
+splitedt_knm(atribute,classe,0.3,3)
+
+print("K 5")
+test_knm(atribute,classe,5)
+splitedt_knm(atribute,classe,0.1,5)
+splitedt_knm(atribute,classe,0.2,5)
+splitedt_knm(atribute,classe,0.3,5)
+
+print("K 7")
+test_knm(atribute,classe,7)
+splitedt_knm(atribute,classe,0.1,7)
+splitedt_knm(atribute,classe,0.2,7)
+splitedt_knm(atribute,classe,0.3,7)
+
+print("K 9")
+test_knm(atribute,classe,9)
+splitedt_knm(atribute,classe,0.1,9)
+splitedt_knm(atribute,classe,0.2,9)
+splitedt_knm(atribute,classe,0.3,9)
+
+exit()
 print("Testando dados reduzido 1")
 atribute = df_cleaned.iloc[:, :-1]
 classe = df_cleaned.iloc[:, -1]
