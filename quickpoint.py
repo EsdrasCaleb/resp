@@ -332,9 +332,9 @@ plt.savefig('checkpoint/learningrate.png')
 
 bestParameters = {"10Fold":False,"70/30":False}
 parameters = {'max_iter': [100,500,1000,2000 ], 'learning_rate_init': [0.001,0.01,0.1] ,
-'hidden_layer_sizes':np.arange(10, 100), 'random_state':[0,1,2,3,4,5,6,7,8,9]}
+'hidden_layer_sizes':np.arange(3, 9), 'random_state':[0,1,2,3,4,5,6,7,8,9]}
+mlp = MLPClassifier()
 for selector in selectors:
-    mlp = MLPClassifier()
     if (selector == "10Fold"):
         kt = KFold(n_splits=10, shuffle=True, random_state=42)
         clf = GridSearchCV(mlp, parameters, n_jobs=-1,cv=kt)
@@ -342,8 +342,8 @@ for selector in selectors:
         print("Best Parameters 10Fold:", clf.best_params_)
     else:
         X_train, X_test, y_train, y_test = train_test_split(atribute, classe, test_size=0.3, random_state=42)
-        grid_search = GridSearchCV(mlp, parameters, cv=5, n_jobs=-1, verbose=1)
-        grid_search.fit(X_train, y_train)
+        grid_search = GridSearchCV(mlp, parameters, n_jobs=-1, verbose=1)
+        grid_search.fit(X_train, y_train, cv=5)
         print("Best Parameters 70/30:", grid_search.best_params_)
 print("******")
 
