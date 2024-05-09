@@ -241,9 +241,11 @@ for selector in selectors:
     bestguess = 6
     downmax = False
     downmin = False
+    marker = 'o'
     while not(downmax and downmin):
         mlp_classifier = MLPClassifier(hidden_layer_sizes=testhidden,random_state=42)
         if(selector == "10Fold"):
+            marker = 's'
             result = tenfold(mlp_classifier, atribute, classe)
         else:
             result = splited(mlp_classifier, atribute, classe,0.3)
@@ -263,12 +265,10 @@ for selector in selectors:
             testhidden -= 1
             while testhidden in hiddenlayers.keys():
                 testhidden -= 1
-        print(hiddenlayers,downmin,downmax)
-    print(bestguess)
     bestNeurons[selector] = bestguess
-    plt.plot( [float(x) for x in hiddenlayers.keys()], [float(x) for x in hiddenlayers.values()],
+    plt.scatter( [float(x) for x in hiddenlayers.keys()], [float(x) for x in hiddenlayers.values()],
               marker='o', label=selector)
-
+print("melhor neuronio",bestNeurons)
 plt.legend()
 plt.savefig('checkpoint/hiddenlayers.png')
 plt.figure(figsize=(8, 6))
@@ -278,11 +278,13 @@ plt.ylabel('Acuracia')
 bestIntractions = {"10Fold":False,"70/30":False}
 for selector in selectors:
     interactions = {"100":0,"1000":0,"5000":0}
-
+    marker = 'o'
     for interaction in interactions.keys():
         mlp_classifier = MLPClassifier(hidden_layer_sizes=int(bestNeurons[selector])
                                                               ,max_iter=int(interaction),random_state=42)
-        if(selector == "10Fold"):
+
+        if (selector == "10Fold"):
+            marker = 's'
             result = tenfold(mlp_classifier, atribute, classe)
         else:
             result = splited(mlp_classifier, atribute, classe,0.3)
@@ -294,7 +296,7 @@ for selector in selectors:
 
     plt.plot( [float(x) for x in interactions.keys()], [float(x) for x in interactions.values()],
               marker='o', label=selector)
-print(bestIntractions)
+print("melhor interacoes",bestIntractions)
 plt.legend()
 plt.savefig('checkpoint/interactions.png')
 plt.figure(figsize=(8, 6))
@@ -304,13 +306,15 @@ plt.ylabel('Acuracia')
 bestLR = {"10Fold":False,"70/30":False}
 for selector in selectors:
     lrs = {"0.001": 0, "0.01": 0, "0.1": 0}
-
+    marker = 'o'
     for lr in lrs.keys():
         mlp_classifier = MLPClassifier(hidden_layer_sizes=int(bestNeurons[selector]),
-                                       max_iter=int(bestIntractions(selector)),
-                                       learning_rate_init=int(lr),
+                                       max_iter=int(bestIntractions[selector]),
+                                       learning_rate_init=float(lr),
                                        random_state=42)
+
         if (selector == "10Fold"):
+            marker = 's'
             result = tenfold(mlp_classifier, atribute, classe)
         else:
             result = splited(mlp_classifier, atribute, classe, 0.3)
@@ -320,9 +324,9 @@ for selector in selectors:
         elif (lrs[bestLR[selector]] < lrs[lr]):
             bestLR[selector] = lr
 
-    plt.plot([float(x) for x in interactions.keys()], [float(x) for x in interactions.values()],
-             marker='o', label=selector)
-print(bestLR)
+    plt.plot([float(x) for x in lrs.keys()], [float(x) for x in lrs.values()],
+             marker=marker, label=selector)
+print("melhor taxa de aprendizado",bestLR)
 plt.legend()
 plt.savefig('checkpoint/learningrate.png')
 
