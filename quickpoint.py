@@ -227,8 +227,8 @@ if not os.path.isfile("checkpoint/redusida3.csv"):
         j+=1
         for line in finalresult:
             print(','.join(line))
+selectors = ["10Fold","70/30"]
 if not os.path.isfile("checkpoint/hiddenlayers.png"):
-    selectors = ["10Fold","70/30"]
     plt.figure(figsize=(8, 6))
     plt.title('Melhor numero de neuronios')
     plt.xlabel('Neuronios')
@@ -330,27 +330,32 @@ if not os.path.isfile("checkpoint/hiddenlayers.png"):
     print("melhor taxa de aprendizado",bestLR)
     plt.legend()
     plt.savefig('checkpoint/learningrate.png')
-
-    bestParameters = {"10Fold":False,"70/30":False}
-    parameters = {'max_iter': [100,500,1000,2000 ], 'learning_rate_init': [0.001,0.01,0.1] ,
-        'hidden_layer_sizes':np.arange(12 ,30), 'random_state':[1,2,3,4,5,6,7,8,9,42]}
-    for selector in selectors:
-        if (selector == "10Fold"):
-            kt = KFold(n_splits=10, shuffle=True, random_state=42)
-            clf = GridSearchCV(mlp, parameters, n_jobs=-1,cv=kt)
-            clf.fit(atribute, classe)
-            print("Best Parameters 10Fold:", clf.best_params_)
-        else:
-            X_train, X_test, y_train, y_test = train_test_split(atribute, classe, test_size=0.3, random_state=42)
-            grid_search = GridSearchCV(mlp, parameters, n_jobs=-1, verbose=1, cv=5)
-            grid_search.fit(X_train, y_train)
-            print("Best Parameters 70/30:", grid_search.best_params_)
+atribute = df.iloc[:, :-1]
+classe = df.iloc[:, -1]
+mlp = MLPClassifier()
+bestParameters = {"10Fold":False,"70/30":False}
+parameters = {'max_iter': [200,500,1000,2000 ], 'learning_rate_init': [0.001,0.01,0.1] ,
+    'hidden_layer_sizes':[7,21,28,72,95,111,120,150,170,200,30,300], 'random_state':[1,2,3,4,5,6,7,8,9,69,20,30,77,777,42]}
+for selector in bestParameters.keys():
+    if (selector == "10Fold"):
+        kt = KFold(n_splits=10, shuffle=True, random_state=42)
+        clf = GridSearchCV(mlp, parameters, n_jobs=-1,cv=kt)
+        clf.fit(atribute, classe)
+        bestParameters[selector] = clf.best_params_
+        print("Best Parameters 10Fold:", bestParameters[selector])
+         
+    else:
+        X_train, X_test, y_train, y_test = train_test_split(atribute, classe, test_size=0.3, random_state=42)
+        grid_search = GridSearchCV(mlp, parameters, n_jobs=-1, verbose=1, cv=5)
+        grid_search.fit(X_train, y_train)
+        bestParameters[selector] = grid_search.best_params_
+        print("Best Parameters 70/30:", bestParameters[selector])
 databases = [df,df_cleaned,df_reduced,data_pca]
 
 trainer1Ten = MLPClassifier(hidden_layer_sizes=7,max_iter=1000,learning_rate_init=0.01,random_state=42)
 trainer1Splited = MLPClassifier(hidden_layer_sizes=6,max_iter=1000,learning_rate_init=0.001,random_state=42)
-trainer2Ten = MLPClassifier(hidden_layer_sizes=7,max_iter=100,learning_rate_init=0.01,random_state=3)
-trainer2Splited = MLPClassifier(hidden_layer_sizes=7,max_iter=100,learning_rate_init=0.01,random_state=4)
+trainer2Ten = MLPClassifier(**bestParameters["10Fold"])
+trainer2Splited = MLPClassifier(**bestParameters["70/30"])
 result = [[]]
 resultNumber = 0
 print("******")
@@ -358,25 +363,25 @@ print("Resultados:")
 for database in databases:
     atribute = database.iloc[:, :-1]
     classe = database.iloc[:, -1]
-    result[resultNumber].append(tenfold(trainer1Ten, atribute, classe))
+    #result[resultNumber].append(tenfold(trainer1Ten, atribute, classe))
     result[resultNumber].append(tenfold(trainer2Ten, atribute, classe))
     result.append([])
     resultNumber+=1
-    result[resultNumber].append(splited(trainer1Splited, atribute, classe, 0.1))
+    #result[resultNumber].append(splited(trainer1Splited, atribute, classe, 0.1))
     result[resultNumber].append(splited(trainer2Splited, atribute, classe, 0.1))
     result.append([])
     resultNumber += 1
-    result[resultNumber].append(splited(trainer1Splited, atribute, classe, 0.2))
+    #result[resultNumber].append(splited(trainer1Splited, atribute, classe, 0.2))
     result[resultNumber].append(splited(trainer2Splited, atribute, classe, 0.2))
     result.append([])
     resultNumber += 1
-    result[resultNumber].append(splited(trainer1Splited, atribute, classe, 0.3))
+    #result[resultNumber].append(splited(trainer1Splited, atribute, classe, 0.3))
     result[resultNumber].append(splited(trainer2Splited, atribute, classe, 0.3))
     result.append([])
     resultNumber += 1
 for row in result:
     print(','.join(row))
-papersplease
+
 #fig, ax = plt.subplots()
 #boxplot = df.boxplot(ax=ax,column=['peso_fonte'])
 #plt.show()
