@@ -24,6 +24,7 @@ instal docker
 systemctl start docker
 docker-compose up
 docker exec -it resp_pyton_1 bash
+docker exec -it resp-pyton-1 bash
 ```
 
 
