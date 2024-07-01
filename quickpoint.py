@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import cross_val_score, KFold
+from sklearn.model_selection import cross_val_score, KFold, cross_val_predict
 from sklearn.model_selection import train_test_split,GridSearchCV
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
@@ -29,6 +29,16 @@ def remove_outliers(df, column, threshold=3):
 
     return df_cleaned
 
+
+def kpredic(classifier, X, y):
+    kf = KFold(n_splits=10, shuffle=True, random_state=42)
+    return cross_val_predict(classifier, X, y, cv=kf)
+
+def splitedpredict(classifier, X, y,split):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split,
+                                                        random_state=42)
+    classifier.fit(X_train, y_train)
+    return classifier.predict(X_test)
 
 def tenfold(classifier,attributes,classe):
     kf = KFold(n_splits=10, shuffle=True, random_state=42)
