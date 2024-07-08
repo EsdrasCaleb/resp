@@ -1,6 +1,5 @@
 import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn.datasets import make_blobs
 from sklearn.metrics import davies_bouldin_score
 from sklearn.cluster import AgglomerativeClustering
 import matplotlib.pyplot as plt
