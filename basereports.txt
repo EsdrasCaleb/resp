@@ -1,0 +1,1446 @@
+Original
+Classification Report KNNk3kfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.74      0.72      0.73      5395
+           1       0.74      0.76      0.75      5639
+
+    accuracy                           0.74     11034
+   macro avg       0.74      0.74      0.74     11034
+weighted avg       0.74      0.74      0.74     11034
+
+Classification Report KNNk5kfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.75      0.73      0.74      5395
+           1       0.75      0.77      0.76      5639
+
+    accuracy                           0.75     11034
+   macro avg       0.75      0.75      0.75     11034
+weighted avg       0.75      0.75      0.75     11034
+
+Classification Report KNNk7kfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.75      0.73      0.74      5395
+           1       0.75      0.77      0.76      5639
+
+    accuracy                           0.75     11034
+   macro avg       0.75      0.75      0.75     11034
+weighted avg       0.75      0.75      0.75     11034
+
+Classification Report Decision treek3kfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.74      0.76      0.75      5395
+           1       0.76      0.75      0.76      5639
+
+    accuracy                           0.75     11034
+   macro avg       0.75      0.75      0.75     11034
+weighted avg       0.75      0.75      0.75     11034
+
+Classification Report Decision treek5kfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.74      0.81      0.78      5395
+           1       0.80      0.73      0.77      5639
+
+    accuracy                           0.77     11034
+   macro avg       0.77      0.77      0.77     11034
+weighted avg       0.77      0.77      0.77     11034
+
+Classification Report Decision treek7kfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.74      0.81      0.77      5395
+           1       0.80      0.73      0.76      5639
+
+    accuracy                           0.77     11034
+   macro avg       0.77      0.77      0.77     11034
+weighted avg       0.77      0.77      0.77     11034
+
+Classification Report Naive BayeskfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.62      0.83      0.71      5395
+           1       0.76      0.50      0.60      5639
+
+    accuracy                           0.66     11034
+   macro avg       0.69      0.67      0.66     11034
+weighted avg       0.69      0.66      0.65     11034
+
+Classification Report MPL (Plot)kfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.73      0.75      0.74      5395
+           1       0.75      0.74      0.75      5639
+
+    accuracy                           0.74     11034
+   macro avg       0.74      0.74      0.74     11034
+weighted avg       0.74      0.74      0.74     11034
+
+Classification Report MPL (GrindSearch)kfoldTen FoldOriginal
+              precision    recall  f1-score   support
+
+           0       0.76      0.75      0.76      5395
+           1       0.77      0.78      0.77      5639
+
+    accuracy                           0.76     11034
+   macro avg       0.76      0.76      0.76     11034
+weighted avg       0.76      0.76      0.76     11034
+
+Classification Report KNNk3split10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.68      0.73      0.70       519
+           1       0.74      0.69      0.72       585
+
+    accuracy                           0.71      1104
+   macro avg       0.71      0.71      0.71      1104
+weighted avg       0.71      0.71      0.71      1104
+
+Classification Report KNNk5split10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.69      0.73      0.71       519
+           1       0.75      0.71      0.73       585
+
+    accuracy                           0.72      1104
+   macro avg       0.72      0.72      0.72      1104
+weighted avg       0.72      0.72      0.72      1104
+
+Classification Report KNNk7split10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.69      0.74      0.71       519
+           1       0.75      0.71      0.73       585
+
+    accuracy                           0.72      1104
+   macro avg       0.72      0.72      0.72      1104
+weighted avg       0.72      0.72      0.72      1104
+
+Classification Report Decision treek3split10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.73      0.71      0.72       519
+           1       0.75      0.76      0.76       585
+
+    accuracy                           0.74      1104
+   macro avg       0.74      0.74      0.74      1104
+weighted avg       0.74      0.74      0.74      1104
+
+Classification Report Decision treek5split10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.72      0.81      0.77       519
+           1       0.81      0.72      0.77       585
+
+    accuracy                           0.77      1104
+   macro avg       0.77      0.77      0.77      1104
+weighted avg       0.77      0.77      0.77      1104
+
+Classification Report Decision treek7split10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.73      0.79      0.76       519
+           1       0.80      0.75      0.77       585
+
+    accuracy                           0.77      1104
+   macro avg       0.77      0.77      0.77      1104
+weighted avg       0.77      0.77      0.77      1104
+
+Classification Report Naive Bayessplit10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.59      0.82      0.69       519
+           1       0.76      0.49      0.60       585
+
+    accuracy                           0.65      1104
+   macro avg       0.67      0.66      0.64      1104
+weighted avg       0.68      0.65      0.64      1104
+
+Classification Report MPL (Plot)split10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.72      0.68      0.70       519
+           1       0.73      0.77      0.75       585
+
+    accuracy                           0.73      1104
+   macro avg       0.73      0.72      0.72      1104
+weighted avg       0.73      0.73      0.72      1104
+
+Classification Report MPL (GrindSearch)split10/9090/10Original
+              precision    recall  f1-score   support
+
+           0       0.76      0.73      0.75       519
+           1       0.77      0.80      0.78       585
+
+    accuracy                           0.77      1104
+   macro avg       0.77      0.77      0.77      1104
+weighted avg       0.77      0.77      0.77      1104
+
+Classification Report KNNk3split20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.71      0.73      1065
+           1       0.74      0.77      0.76      1142
+
+    accuracy                           0.74      2207
+   macro avg       0.74      0.74      0.74      2207
+weighted avg       0.74      0.74      0.74      2207
+
+Classification Report KNNk5split20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.71      0.73      1065
+           1       0.74      0.77      0.75      1142
+
+    accuracy                           0.74      2207
+   macro avg       0.74      0.74      0.74      2207
+weighted avg       0.74      0.74      0.74      2207
+
+Classification Report KNNk7split20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.75      0.72      0.73      1065
+           1       0.75      0.78      0.76      1142
+
+    accuracy                           0.75      2207
+   macro avg       0.75      0.75      0.75      2207
+weighted avg       0.75      0.75      0.75      2207
+
+Classification Report Decision treek3split20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.77      0.75      1065
+           1       0.78      0.75      0.76      1142
+
+    accuracy                           0.76      2207
+   macro avg       0.76      0.76      0.76      2207
+weighted avg       0.76      0.76      0.76      2207
+
+Classification Report Decision treek5split20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.82      0.78      1065
+           1       0.81      0.73      0.77      1142
+
+    accuracy                           0.77      2207
+   macro avg       0.78      0.77      0.77      2207
+weighted avg       0.78      0.77      0.77      2207
+
+Classification Report Decision treek7split20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.80      0.77      1065
+           1       0.80      0.74      0.77      1142
+
+    accuracy                           0.77      2207
+   macro avg       0.77      0.77      0.77      2207
+weighted avg       0.77      0.77      0.77      2207
+
+Classification Report Naive Bayessplit20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.61      0.83      0.70      1065
+           1       0.76      0.51      0.61      1142
+
+    accuracy                           0.66      2207
+   macro avg       0.69      0.67      0.66      2207
+weighted avg       0.69      0.66      0.66      2207
+
+Classification Report MPL (Plot)split20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.72      0.71      0.71      1065
+           1       0.73      0.74      0.73      1142
+
+    accuracy                           0.72      2207
+   macro avg       0.72      0.72      0.72      2207
+weighted avg       0.72      0.72      0.72      2207
+
+Classification Report MPL (GrindSearch)split20/8080/20Original
+              precision    recall  f1-score   support
+
+           0       0.75      0.75      0.75      1065
+           1       0.77      0.77      0.77      1142
+
+    accuracy                           0.76      2207
+   macro avg       0.76      0.76      0.76      2207
+weighted avg       0.76      0.76      0.76      2207
+
+Classification Report KNNk3split30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.70      0.72      1617
+           1       0.73      0.76      0.74      1694
+
+    accuracy                           0.73      3311
+   macro avg       0.73      0.73      0.73      3311
+weighted avg       0.73      0.73      0.73      3311
+
+Classification Report KNNk5split30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.73      0.72      0.73      1617
+           1       0.74      0.75      0.74      1694
+
+    accuracy                           0.73      3311
+   macro avg       0.73      0.73      0.73      3311
+weighted avg       0.73      0.73      0.73      3311
+
+Classification Report KNNk7split30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.72      0.73      1617
+           1       0.74      0.75      0.75      1694
+
+    accuracy                           0.74      3311
+   macro avg       0.74      0.74      0.74      3311
+weighted avg       0.74      0.74      0.74      3311
+
+Classification Report Decision treek3split30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.75      0.75      1617
+           1       0.76      0.75      0.76      1694
+
+    accuracy                           0.75      3311
+   macro avg       0.75      0.75      0.75      3311
+weighted avg       0.75      0.75      0.75      3311
+
+Classification Report Decision treek5split30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.81      0.77      1617
+           1       0.80      0.73      0.76      1694
+
+    accuracy                           0.77      3311
+   macro avg       0.77      0.77      0.77      3311
+weighted avg       0.77      0.77      0.77      3311
+
+Classification Report Decision treek7split30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.73      0.79      0.76      1617
+           1       0.78      0.72      0.75      1694
+
+    accuracy                           0.75      3311
+   macro avg       0.76      0.75      0.75      3311
+weighted avg       0.76      0.75      0.75      3311
+
+Classification Report Naive Bayessplit30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.62      0.83      0.71      1617
+           1       0.75      0.51      0.61      1694
+
+    accuracy                           0.66      3311
+   macro avg       0.68      0.67      0.66      3311
+weighted avg       0.69      0.66      0.65      3311
+
+Classification Report MPL (Plot)split30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.73      0.68      0.70      1617
+           1       0.71      0.76      0.73      1694
+
+    accuracy                           0.72      3311
+   macro avg       0.72      0.72      0.72      3311
+weighted avg       0.72      0.72      0.72      3311
+
+Classification Report MPL (GrindSearch)split30/7070/30Original
+              precision    recall  f1-score   support
+
+           0       0.74      0.74      0.74      1617
+           1       0.75      0.76      0.75      1694
+
+    accuracy                           0.75      3311
+   macro avg       0.75      0.75      0.75      3311
+weighted avg       0.75      0.75      0.75      3311
+
+=================
+No outliners r1
+Classification Report KNNk3kfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.74      0.74      4839
+           1       0.72      0.73      0.72      4483
+
+    accuracy                           0.73      9322
+   macro avg       0.73      0.73      0.73      9322
+weighted avg       0.73      0.73      0.73      9322
+
+Classification Report KNNk5kfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.75      0.75      4839
+           1       0.73      0.73      0.73      4483
+
+    accuracy                           0.74      9322
+   macro avg       0.74      0.74      0.74      9322
+weighted avg       0.74      0.74      0.74      9322
+
+Classification Report KNNk7kfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.75      0.75      4839
+           1       0.73      0.73      0.73      4483
+
+    accuracy                           0.74      9322
+   macro avg       0.74      0.74      0.74      9322
+weighted avg       0.74      0.74      0.74      9322
+
+Classification Report Decision treek3kfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.74      0.81      0.78      4839
+           1       0.78      0.70      0.74      4483
+
+    accuracy                           0.76      9322
+   macro avg       0.76      0.76      0.76      9322
+weighted avg       0.76      0.76      0.76      9322
+
+Classification Report Decision treek5kfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.85      0.80      4839
+           1       0.81      0.70      0.75      4483
+
+    accuracy                           0.77      9322
+   macro avg       0.78      0.77      0.77      9322
+weighted avg       0.78      0.77      0.77      9322
+
+Classification Report Decision treek7kfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.84      0.79      4839
+           1       0.80      0.69      0.74      4483
+
+    accuracy                           0.77      9322
+   macro avg       0.77      0.76      0.77      9322
+weighted avg       0.77      0.77      0.77      9322
+
+Classification Report Naive BayeskfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.68      0.77      0.72      4839
+           1       0.71      0.60      0.65      4483
+
+    accuracy                           0.69      9322
+   macro avg       0.69      0.69      0.69      9322
+weighted avg       0.69      0.69      0.69      9322
+
+Classification Report MPL (Plot)kfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.74      0.77      0.75      4839
+           1       0.74      0.70      0.72      4483
+
+    accuracy                           0.74      9322
+   macro avg       0.74      0.74      0.74      9322
+weighted avg       0.74      0.74      0.74      9322
+
+Classification Report MPL (GrindSearch)kfoldTen FoldNo outliners r1
+              precision    recall  f1-score   support
+
+           0       0.77      0.77      0.77      4839
+           1       0.75      0.75      0.75      4483
+
+    accuracy                           0.76      9322
+   macro avg       0.76      0.76      0.76      9322
+weighted avg       0.76      0.76      0.76      9322
+
+Classification Report KNNk3split10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.67      0.75      0.71       476
+           1       0.70      0.62      0.66       457
+
+    accuracy                           0.69       933
+   macro avg       0.69      0.68      0.68       933
+weighted avg       0.69      0.69      0.68       933
+
+Classification Report KNNk5split10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.68      0.74      0.71       476
+           1       0.71      0.64      0.67       457
+
+    accuracy                           0.69       933
+   macro avg       0.70      0.69      0.69       933
+weighted avg       0.70      0.69      0.69       933
+
+Classification Report KNNk7split10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.69      0.76      0.72       476
+           1       0.72      0.64      0.68       457
+
+    accuracy                           0.70       933
+   macro avg       0.71      0.70      0.70       933
+weighted avg       0.71      0.70      0.70       933
+
+Classification Report Decision treek3split10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.80      0.77       476
+           1       0.77      0.73      0.75       457
+
+    accuracy                           0.76       933
+   macro avg       0.76      0.76      0.76       933
+weighted avg       0.76      0.76      0.76       933
+
+Classification Report Decision treek5split10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.84      0.79       476
+           1       0.81      0.71      0.76       457
+
+    accuracy                           0.78       933
+   macro avg       0.78      0.78      0.78       933
+weighted avg       0.78      0.78      0.78       933
+
+Classification Report Decision treek7split10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.74      0.85      0.79       476
+           1       0.81      0.69      0.74       457
+
+    accuracy                           0.77       933
+   macro avg       0.78      0.77      0.77       933
+weighted avg       0.78      0.77      0.77       933
+
+Classification Report Naive Bayessplit10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.66      0.76      0.71       476
+           1       0.70      0.60      0.64       457
+
+    accuracy                           0.68       933
+   macro avg       0.68      0.68      0.68       933
+weighted avg       0.68      0.68      0.68       933
+
+Classification Report MPL (Plot)split10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.73      0.73      0.73       476
+           1       0.72      0.72      0.72       457
+
+    accuracy                           0.72       933
+   macro avg       0.72      0.72      0.72       933
+weighted avg       0.72      0.72      0.72       933
+
+Classification Report MPL (GrindSearch)split10/9090/10No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.71      0.82      0.76       476
+           1       0.77      0.65      0.70       457
+
+    accuracy                           0.73       933
+   macro avg       0.74      0.73      0.73       933
+weighted avg       0.74      0.73      0.73       933
+
+Classification Report KNNk3split20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.68      0.76      0.72       957
+           1       0.71      0.63      0.67       908
+
+    accuracy                           0.69      1865
+   macro avg       0.70      0.69      0.69      1865
+weighted avg       0.70      0.69      0.69      1865
+
+Classification Report KNNk5split20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.70      0.78      0.74       957
+           1       0.73      0.64      0.69       908
+
+    accuracy                           0.71      1865
+   macro avg       0.72      0.71      0.71      1865
+weighted avg       0.71      0.71      0.71      1865
+
+Classification Report KNNk7split20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.70      0.80      0.74       957
+           1       0.75      0.64      0.69       908
+
+    accuracy                           0.72      1865
+   macro avg       0.72      0.72      0.72      1865
+weighted avg       0.72      0.72      0.72      1865
+
+Classification Report Decision treek3split20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.78      0.77       957
+           1       0.76      0.72      0.74       908
+
+    accuracy                           0.75      1865
+   macro avg       0.76      0.75      0.75      1865
+weighted avg       0.76      0.75      0.75      1865
+
+Classification Report Decision treek5split20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.74      0.85      0.79       957
+           1       0.81      0.69      0.75       908
+
+    accuracy                           0.77      1865
+   macro avg       0.78      0.77      0.77      1865
+weighted avg       0.78      0.77      0.77      1865
+
+Classification Report Decision treek7split20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.81      0.78       957
+           1       0.78      0.72      0.75       908
+
+    accuracy                           0.77      1865
+   macro avg       0.77      0.77      0.77      1865
+weighted avg       0.77      0.77      0.77      1865
+
+Classification Report Naive Bayessplit20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.67      0.77      0.71       957
+           1       0.71      0.59      0.65       908
+
+    accuracy                           0.68      1865
+   macro avg       0.69      0.68      0.68      1865
+weighted avg       0.69      0.68      0.68      1865
+
+Classification Report MPL (Plot)split20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.72      0.77      0.74       957
+           1       0.74      0.69      0.71       908
+
+    accuracy                           0.73      1865
+   macro avg       0.73      0.73      0.73      1865
+weighted avg       0.73      0.73      0.73      1865
+
+Classification Report MPL (GrindSearch)split20/8080/20No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.81      0.60      0.69       957
+           1       0.67      0.85      0.75       908
+
+    accuracy                           0.72      1865
+   macro avg       0.74      0.73      0.72      1865
+weighted avg       0.74      0.72      0.72      1865
+
+Classification Report KNNk3split30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.73      0.72      0.72      1437
+           1       0.71      0.72      0.71      1360
+
+    accuracy                           0.72      2797
+   macro avg       0.72      0.72      0.72      2797
+weighted avg       0.72      0.72      0.72      2797
+
+Classification Report KNNk5split30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.74      0.74      0.74      1437
+           1       0.73      0.72      0.73      1360
+
+    accuracy                           0.73      2797
+   macro avg       0.73      0.73      0.73      2797
+weighted avg       0.73      0.73      0.73      2797
+
+Classification Report KNNk7split30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.74      0.75      0.75      1437
+           1       0.73      0.72      0.73      1360
+
+    accuracy                           0.74      2797
+   macro avg       0.74      0.74      0.74      2797
+weighted avg       0.74      0.74      0.74      2797
+
+Classification Report Decision treek3split30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.78      0.77      1437
+           1       0.76      0.72      0.74      1360
+
+    accuracy                           0.75      2797
+   macro avg       0.75      0.75      0.75      2797
+weighted avg       0.75      0.75      0.75      2797
+
+Classification Report Decision treek5split30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.74      0.83      0.79      1437
+           1       0.80      0.70      0.74      1360
+
+    accuracy                           0.77      2797
+   macro avg       0.77      0.76      0.76      2797
+weighted avg       0.77      0.77      0.77      2797
+
+Classification Report Decision treek7split30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.75      0.79      0.77      1437
+           1       0.77      0.71      0.74      1360
+
+    accuracy                           0.76      2797
+   macro avg       0.76      0.75      0.75      2797
+weighted avg       0.76      0.76      0.75      2797
+
+Classification Report Naive Bayessplit30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.66      0.76      0.71      1437
+           1       0.70      0.59      0.64      1360
+
+    accuracy                           0.68      2797
+   macro avg       0.68      0.68      0.68      2797
+weighted avg       0.68      0.68      0.68      2797
+
+Classification Report MPL (Plot)split30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.73      0.71      0.72      1437
+           1       0.70      0.72      0.71      1360
+
+    accuracy                           0.71      2797
+   macro avg       0.71      0.71      0.71      2797
+weighted avg       0.71      0.71      0.71      2797
+
+Classification Report MPL (GrindSearch)split30/7070/30No outliners r1
+              precision    recall  f1-score   support
+
+           0       0.74      0.80      0.77      1437
+           1       0.77      0.70      0.73      1360
+
+    accuracy                           0.75      2797
+   macro avg       0.75      0.75      0.75      2797
+weighted avg       0.75      0.75      0.75      2797
+
+=================
+Menos atributos r2
+Classification Report KNNk3kfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.71      0.72      5395
+           1       0.73      0.75      0.74      5639
+
+    accuracy                           0.73     11034
+   macro avg       0.73      0.73      0.73     11034
+weighted avg       0.73      0.73      0.73     11034
+
+Classification Report KNNk5kfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.72      0.73      5395
+           1       0.74      0.75      0.75      5639
+
+    accuracy                           0.74     11034
+   macro avg       0.74      0.74      0.74     11034
+weighted avg       0.74      0.74      0.74     11034
+
+Classification Report KNNk7kfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.74      0.74      5395
+           1       0.75      0.75      0.75      5639
+
+    accuracy                           0.75     11034
+   macro avg       0.75      0.75      0.75     11034
+weighted avg       0.75      0.75      0.75     11034
+
+Classification Report Decision treek3kfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.76      0.75      5395
+           1       0.76      0.75      0.76      5639
+
+    accuracy                           0.75     11034
+   macro avg       0.75      0.75      0.75     11034
+weighted avg       0.75      0.75      0.75     11034
+
+Classification Report Decision treek5kfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.79      0.77      5395
+           1       0.79      0.74      0.76      5639
+
+    accuracy                           0.77     11034
+   macro avg       0.77      0.77      0.77     11034
+weighted avg       0.77      0.77      0.77     11034
+
+Classification Report Decision treek7kfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.80      0.77      5395
+           1       0.79      0.74      0.76      5639
+
+    accuracy                           0.77     11034
+   macro avg       0.77      0.77      0.77     11034
+weighted avg       0.77      0.77      0.77     11034
+
+Classification Report Naive BayeskfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.66      0.80      0.72      5395
+           1       0.76      0.61      0.67      5639
+
+    accuracy                           0.70     11034
+   macro avg       0.71      0.70      0.70     11034
+weighted avg       0.71      0.70      0.70     11034
+
+Classification Report MPL (Plot)kfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.62      0.70      0.66      5395
+           1       0.67      0.59      0.63      5639
+
+    accuracy                           0.64     11034
+   macro avg       0.64      0.64      0.64     11034
+weighted avg       0.65      0.64      0.64     11034
+
+Classification Report MPL (GrindSearch)kfoldTen FoldMenos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.75      0.75      0.75      5395
+           1       0.76      0.76      0.76      5639
+
+    accuracy                           0.76     11034
+   macro avg       0.76      0.76      0.76     11034
+weighted avg       0.76      0.76      0.76     11034
+
+Classification Report KNNk3split10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.67      0.74      0.70       519
+           1       0.74      0.67      0.71       585
+
+    accuracy                           0.70      1104
+   macro avg       0.70      0.70      0.70      1104
+weighted avg       0.71      0.70      0.70      1104
+
+Classification Report KNNk5split10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.72      0.73       519
+           1       0.75      0.77      0.76       585
+
+    accuracy                           0.74      1104
+   macro avg       0.74      0.74      0.74      1104
+weighted avg       0.74      0.74      0.74      1104
+
+Classification Report KNNk7split10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.72      0.73       519
+           1       0.75      0.77      0.76       585
+
+    accuracy                           0.74      1104
+   macro avg       0.74      0.74      0.74      1104
+weighted avg       0.74      0.74      0.74      1104
+
+Classification Report Decision treek3split10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.71      0.72       519
+           1       0.75      0.76      0.76       585
+
+    accuracy                           0.74      1104
+   macro avg       0.74      0.74      0.74      1104
+weighted avg       0.74      0.74      0.74      1104
+
+Classification Report Decision treek5split10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.79      0.76       519
+           1       0.80      0.74      0.77       585
+
+    accuracy                           0.76      1104
+   macro avg       0.76      0.76      0.76      1104
+weighted avg       0.77      0.76      0.76      1104
+
+Classification Report Decision treek7split10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.80      0.76       519
+           1       0.80      0.73      0.77       585
+
+    accuracy                           0.76      1104
+   macro avg       0.76      0.76      0.76      1104
+weighted avg       0.77      0.76      0.76      1104
+
+Classification Report Naive Bayessplit10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.65      0.80      0.72       519
+           1       0.78      0.61      0.68       585
+
+    accuracy                           0.70      1104
+   macro avg       0.71      0.71      0.70      1104
+weighted avg       0.71      0.70      0.70      1104
+
+Classification Report MPL (Plot)split10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.71      0.76      0.74       519
+           1       0.78      0.72      0.75       585
+
+    accuracy                           0.74      1104
+   macro avg       0.74      0.74      0.74      1104
+weighted avg       0.75      0.74      0.74      1104
+
+Classification Report MPL (GrindSearch)split10/9090/10Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.75      0.72      0.73       519
+           1       0.76      0.79      0.77       585
+
+    accuracy                           0.75      1104
+   macro avg       0.75      0.75      0.75      1104
+weighted avg       0.75      0.75      0.75      1104
+
+Classification Report KNNk3split20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.70      0.71      1065
+           1       0.73      0.76      0.74      1142
+
+    accuracy                           0.73      2207
+   macro avg       0.73      0.73      0.73      2207
+weighted avg       0.73      0.73      0.73      2207
+
+Classification Report KNNk5split20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.70      0.72      1065
+           1       0.73      0.77      0.75      1142
+
+    accuracy                           0.73      2207
+   macro avg       0.73      0.73      0.73      2207
+weighted avg       0.73      0.73      0.73      2207
+
+Classification Report KNNk7split20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.71      0.73      1065
+           1       0.74      0.77      0.76      1142
+
+    accuracy                           0.74      2207
+   macro avg       0.74      0.74      0.74      2207
+weighted avg       0.74      0.74      0.74      2207
+
+Classification Report Decision treek3split20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.77      0.75      1065
+           1       0.78      0.75      0.76      1142
+
+    accuracy                           0.76      2207
+   macro avg       0.76      0.76      0.76      2207
+weighted avg       0.76      0.76      0.76      2207
+
+Classification Report Decision treek5split20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.78      0.76      1065
+           1       0.78      0.75      0.76      1142
+
+    accuracy                           0.76      2207
+   macro avg       0.76      0.76      0.76      2207
+weighted avg       0.76      0.76      0.76      2207
+
+Classification Report Decision treek7split20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.78      0.76      1065
+           1       0.78      0.74      0.76      1142
+
+    accuracy                           0.76      2207
+   macro avg       0.76      0.76      0.76      2207
+weighted avg       0.76      0.76      0.76      2207
+
+Classification Report Naive Bayessplit20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.66      0.80      0.73      1065
+           1       0.77      0.62      0.69      1142
+
+    accuracy                           0.71      2207
+   macro avg       0.72      0.71      0.71      2207
+weighted avg       0.72      0.71      0.71      2207
+
+Classification Report MPL (Plot)split20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.71      0.74      0.73      1065
+           1       0.75      0.72      0.73      1142
+
+    accuracy                           0.73      2207
+   macro avg       0.73      0.73      0.73      2207
+weighted avg       0.73      0.73      0.73      2207
+
+Classification Report MPL (GrindSearch)split20/8080/20Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.68      0.81      0.74      1065
+           1       0.78      0.65      0.71      1142
+
+    accuracy                           0.73      2207
+   macro avg       0.73      0.73      0.73      2207
+weighted avg       0.74      0.73      0.73      2207
+
+Classification Report KNNk3split30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.71      0.72      1617
+           1       0.73      0.75      0.74      1694
+
+    accuracy                           0.73      3311
+   macro avg       0.73      0.73      0.73      3311
+weighted avg       0.73      0.73      0.73      3311
+
+Classification Report KNNk5split30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.72      0.73      1617
+           1       0.74      0.76      0.75      1694
+
+    accuracy                           0.74      3311
+   macro avg       0.74      0.74      0.74      3311
+weighted avg       0.74      0.74      0.74      3311
+
+Classification Report KNNk7split30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.73      0.74      1617
+           1       0.75      0.76      0.75      1694
+
+    accuracy                           0.75      3311
+   macro avg       0.75      0.75      0.75      3311
+weighted avg       0.75      0.75      0.75      3311
+
+Classification Report Decision treek3split30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.74      0.75      0.75      1617
+           1       0.76      0.75      0.76      1694
+
+    accuracy                           0.75      3311
+   macro avg       0.75      0.75      0.75      3311
+weighted avg       0.75      0.75      0.75      3311
+
+Classification Report Decision treek5split30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.75      0.76      0.76      1617
+           1       0.77      0.75      0.76      1694
+
+    accuracy                           0.76      3311
+   macro avg       0.76      0.76      0.76      3311
+weighted avg       0.76      0.76      0.76      3311
+
+Classification Report Decision treek7split30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.73      0.80      0.77      1617
+           1       0.79      0.72      0.76      1694
+
+    accuracy                           0.76      3311
+   macro avg       0.76      0.76      0.76      3311
+weighted avg       0.76      0.76      0.76      3311
+
+Classification Report Naive Bayessplit30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.66      0.80      0.72      1617
+           1       0.76      0.61      0.68      1694
+
+    accuracy                           0.70      3311
+   macro avg       0.71      0.70      0.70      3311
+weighted avg       0.71      0.70      0.70      3311
+
+Classification Report MPL (Plot)split30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.70      0.65      0.67      1617
+           1       0.69      0.73      0.71      1694
+
+    accuracy                           0.69      3311
+   macro avg       0.69      0.69      0.69      3311
+weighted avg       0.69      0.69      0.69      3311
+
+Classification Report MPL (GrindSearch)split30/7070/30Menos atributos r2
+              precision    recall  f1-score   support
+
+           0       0.75      0.72      0.73      1617
+           1       0.74      0.77      0.75      1694
+
+    accuracy                           0.75      3311
+   macro avg       0.75      0.74      0.74      3311
+weighted avg       0.75      0.75      0.74      3311
+
+=================
+PCA R3
+Classification Report KNNk3kfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.70      0.70      0.70      5395
+           1       0.71      0.72      0.71      5639
+
+    accuracy                           0.71     11034
+   macro avg       0.71      0.71      0.71     11034
+weighted avg       0.71      0.71      0.71     11034
+
+Classification Report KNNk5kfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.72      0.70      0.71      5395
+           1       0.72      0.73      0.73      5639
+
+    accuracy                           0.72     11034
+   macro avg       0.72      0.72      0.72     11034
+weighted avg       0.72      0.72      0.72     11034
+
+Classification Report KNNk7kfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.72      0.71      0.72      5395
+           1       0.73      0.74      0.73      5639
+
+    accuracy                           0.72     11034
+   macro avg       0.72      0.72      0.72     11034
+weighted avg       0.72      0.72      0.72     11034
+
+Classification Report Decision treek3kfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.72      0.43      0.54      5395
+           1       0.61      0.84      0.70      5639
+
+    accuracy                           0.64     11034
+   macro avg       0.66      0.63      0.62     11034
+weighted avg       0.66      0.64      0.62     11034
+
+Classification Report Decision treek5kfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.65      0.75      0.70      5395
+           1       0.72      0.62      0.67      5639
+
+    accuracy                           0.68     11034
+   macro avg       0.69      0.68      0.68     11034
+weighted avg       0.69      0.68      0.68     11034
+
+Classification Report Decision treek7kfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.67      0.74      0.70      5395
+           1       0.72      0.66      0.69      5639
+
+    accuracy                           0.70     11034
+   macro avg       0.70      0.70      0.70     11034
+weighted avg       0.70      0.70      0.70     11034
+
+Classification Report Naive BayeskfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.57      0.81      0.67      5395
+           1       0.70      0.41      0.52      5639
+
+    accuracy                           0.61     11034
+   macro avg       0.63      0.61      0.59     11034
+weighted avg       0.63      0.61      0.59     11034
+
+Classification Report MPL (Plot)kfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.68      0.71      0.70      5395
+           1       0.71      0.68      0.69      5639
+
+    accuracy                           0.69     11034
+   macro avg       0.70      0.69      0.69     11034
+weighted avg       0.70      0.69      0.69     11034
+
+Classification Report MPL (GrindSearch)kfoldTen FoldPCA R3
+              precision    recall  f1-score   support
+
+           0       0.71      0.67      0.69      5395
+           1       0.70      0.74      0.72      5639
+
+    accuracy                           0.71     11034
+   macro avg       0.71      0.71      0.71     11034
+weighted avg       0.71      0.71      0.71     11034
+
+Classification Report KNNk3split10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.64      0.72      0.68       519
+           1       0.72      0.64      0.68       585
+
+    accuracy                           0.68      1104
+   macro avg       0.68      0.68      0.68      1104
+weighted avg       0.68      0.68      0.68      1104
+
+Classification Report KNNk5split10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.66      0.72      0.69       519
+           1       0.73      0.67      0.70       585
+
+    accuracy                           0.69      1104
+   macro avg       0.69      0.70      0.69      1104
+weighted avg       0.70      0.69      0.69      1104
+
+Classification Report KNNk7split10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.70      0.68      0.69       519
+           1       0.72      0.75      0.73       585
+
+    accuracy                           0.71      1104
+   macro avg       0.71      0.71      0.71      1104
+weighted avg       0.71      0.71      0.71      1104
+
+Classification Report Decision treek3split10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.71      0.46      0.56       519
+           1       0.63      0.84      0.72       585
+
+    accuracy                           0.66      1104
+   macro avg       0.67      0.65      0.64      1104
+weighted avg       0.67      0.66      0.64      1104
+
+Classification Report Decision treek5split10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.63      0.78      0.70       519
+           1       0.76      0.59      0.66       585
+
+    accuracy                           0.68      1104
+   macro avg       0.69      0.69      0.68      1104
+weighted avg       0.70      0.68      0.68      1104
+
+Classification Report Decision treek7split10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.67      0.75      0.71       519
+           1       0.75      0.68      0.71       585
+
+    accuracy                           0.71      1104
+   macro avg       0.71      0.71      0.71      1104
+weighted avg       0.71      0.71      0.71      1104
+
+Classification Report Naive Bayessplit10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.56      0.83      0.67       519
+           1       0.74      0.42      0.54       585
+
+    accuracy                           0.61      1104
+   macro avg       0.65      0.63      0.60      1104
+weighted avg       0.65      0.61      0.60      1104
+
+Classification Report MPL (Plot)split10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.63      0.76      0.69       519
+           1       0.74      0.61      0.67       585
+
+    accuracy                           0.68      1104
+   macro avg       0.69      0.69      0.68      1104
+weighted avg       0.69      0.68      0.68      1104
+
+Classification Report MPL (GrindSearch)split10/9090/10PCA R3
+              precision    recall  f1-score   support
+
+           0       0.64      0.77      0.70       519
+           1       0.76      0.62      0.68       585
+
+    accuracy                           0.69      1104
+   macro avg       0.70      0.70      0.69      1104
+weighted avg       0.70      0.69      0.69      1104
+
+Classification Report KNNk3split20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.69      0.69      0.69      1065
+           1       0.71      0.72      0.71      1142
+
+    accuracy                           0.70      2207
+   macro avg       0.70      0.70      0.70      2207
+weighted avg       0.70      0.70      0.70      2207
+
+Classification Report KNNk5split20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.71      0.69      0.70      1065
+           1       0.72      0.74      0.73      1142
+
+    accuracy                           0.72      2207
+   macro avg       0.72      0.72      0.72      2207
+weighted avg       0.72      0.72      0.72      2207
+
+Classification Report KNNk7split20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.71      0.68      0.69      1065
+           1       0.71      0.74      0.73      1142
+
+    accuracy                           0.71      2207
+   macro avg       0.71      0.71      0.71      2207
+weighted avg       0.71      0.71      0.71      2207
+
+Classification Report Decision treek3split20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.71      0.43      0.54      1065
+           1       0.61      0.84      0.71      1142
+
+    accuracy                           0.64      2207
+   macro avg       0.66      0.64      0.62      2207
+weighted avg       0.66      0.64      0.63      2207
+
+Classification Report Decision treek5split20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.66      0.74      0.70      1065
+           1       0.72      0.65      0.68      1142
+
+    accuracy                           0.69      2207
+   macro avg       0.69      0.69      0.69      2207
+weighted avg       0.69      0.69      0.69      2207
+
+Classification Report Decision treek7split20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.68      0.75      0.71      1065
+           1       0.74      0.67      0.70      1142
+
+    accuracy                           0.71      2207
+   macro avg       0.71      0.71      0.70      2207
+weighted avg       0.71      0.71      0.70      2207
+
+Classification Report Naive Bayessplit20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.57      0.82      0.67      1065
+           1       0.71      0.41      0.52      1142
+
+    accuracy                           0.61      2207
+   macro avg       0.64      0.62      0.60      2207
+weighted avg       0.64      0.61      0.59      2207
+
+Classification Report MPL (Plot)split20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.65      0.73      0.69      1065
+           1       0.71      0.64      0.67      1142
+
+    accuracy                           0.68      2207
+   macro avg       0.68      0.68      0.68      2207
+weighted avg       0.68      0.68      0.68      2207
+
+Classification Report MPL (GrindSearch)split20/8080/20PCA R3
+              precision    recall  f1-score   support
+
+           0       0.70      0.71      0.70      1065
+           1       0.73      0.72      0.72      1142
+
+    accuracy                           0.71      2207
+   macro avg       0.71      0.71      0.71      2207
+weighted avg       0.71      0.71      0.71      2207
+
+Classification Report KNNk3split30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.70      0.69      0.69      1617
+           1       0.71      0.72      0.72      1694
+
+    accuracy                           0.71      3311
+   macro avg       0.71      0.70      0.70      3311
+weighted avg       0.71      0.71      0.71      3311
+
+Classification Report KNNk5split30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.72      0.68      0.70      1617
+           1       0.71      0.74      0.73      1694
+
+    accuracy                           0.71      3311
+   macro avg       0.71      0.71      0.71      3311
+weighted avg       0.71      0.71      0.71      3311
+
+Classification Report KNNk7split30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.72      0.68      0.70      1617
+           1       0.71      0.75      0.73      1694
+
+    accuracy                           0.72      3311
+   macro avg       0.72      0.72      0.72      3311
+weighted avg       0.72      0.72      0.72      3311
+
+Classification Report Decision treek3split30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.72      0.43      0.54      1617
+           1       0.61      0.84      0.71      1694
+
+    accuracy                           0.64      3311
+   macro avg       0.66      0.64      0.62      3311
+weighted avg       0.66      0.64      0.62      3311
+
+Classification Report Decision treek5split30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.65      0.75      0.70      1617
+           1       0.73      0.62      0.67      1694
+
+    accuracy                           0.69      3311
+   macro avg       0.69      0.69      0.68      3311
+weighted avg       0.69      0.69      0.68      3311
+
+Classification Report Decision treek7split30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.70      0.67      0.69      1617
+           1       0.70      0.72      0.71      1694
+
+    accuracy                           0.70      3311
+   macro avg       0.70      0.70      0.70      3311
+weighted avg       0.70      0.70      0.70      3311
+
+Classification Report Naive Bayessplit30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.57      0.81      0.67      1617
+           1       0.70      0.42      0.53      1694
+
+    accuracy                           0.61      3311
+   macro avg       0.64      0.62      0.60      3311
+weighted avg       0.64      0.61      0.60      3311
+
+Classification Report MPL (Plot)split30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.64      0.73      0.68      1617
+           1       0.70      0.61      0.66      1694
+
+    accuracy                           0.67      3311
+   macro avg       0.67      0.67      0.67      3311
+weighted avg       0.67      0.67      0.67      3311
+
+Classification Report MPL (GrindSearch)split30/7070/30PCA R3
+              precision    recall  f1-score   support
+
+           0       0.67      0.73      0.70      1617
+           1       0.72      0.65      0.68      1694
+
+    accuracy                           0.69      3311
+   macro avg       0.69      0.69      0.69      3311
+weighted avg       0.69      0.69      0.69      3311

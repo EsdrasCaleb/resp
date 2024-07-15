@@ -104,6 +104,7 @@ for datastring in ['checkpoint/data.csv', 'checkpoint/redusida2.csv']:
 
     print("Tabela Randon Florest", flush=True)
     n_estimators_list = [10, 100]
+
     criteria = ['gini', 'entropy', 'log_loss']
     print("estrategia de selecao,criterio, 10,20")
 
@@ -121,7 +122,6 @@ for datastring in ['checkpoint/data.csv', 'checkpoint/redusida2.csv']:
     print("Tabela Staking")
     print("estrategia de selecao,Classificdores, Acuracia")
     n_classifiers_list = [10, 20]
-    n_classifiers_list = []
     for n_classifiers in n_classifiers_list:
         base_estimators = [(f'knn_{i}', base_knn) for i in range(n_classifiers // 2)] + \
                           [(f'mlp_{i}', base_mlp) for i in range(n_classifiers // 2, n_classifiers)]
@@ -152,6 +152,7 @@ for datastring in ['checkpoint/data.csv', 'checkpoint/redusida2.csv']:
     print(f'Stacking com decision tree e random forest {accuracy[0]}')
     i = 0
     aux = ["Ten Fold", '90/10', '80/20', '70/30']
+
     for results in resultsdata:
         results_df = pd.DataFrame(results)
         plt.figure(figsize=(8, 6))
@@ -171,6 +172,6 @@ for datastring in ['checkpoint/data.csv', 'checkpoint/redusida2.csv']:
         plt.title('Receiver Operating Characteristic (ROC) Curve')
         plt.legend(loc="lower right")
         plt.grid(True)
-        plt.savefig("checkpoint/roc" + databasesName[j] + aux[i].replace('/', '_') + ".png")
+        plt.savefig("checkpoint/rocfinal2" + databasesName[j] + aux[i].replace('/', '_') + ".png")
         i +=1
     j+=1
