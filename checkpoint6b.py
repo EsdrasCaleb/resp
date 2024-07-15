@@ -14,7 +14,7 @@ import time
 
 original_database = pd.read_csv('checkpoint/data.csv')
 df_lessattr = pd.read_csv('checkpoint/redusida2.csv')
-basesname = ["Orignal","Reduzida 2"]
+basesname = ["Orignal Dataset", "Reduced Dataset 2"]
 databases = [original_database,df_lessattr]
 indice = 0
 label_encoder = LabelEncoder()
@@ -42,21 +42,12 @@ for db in databases:
 
     # Plot the Davies-Bouldin index for each k
     plt.figure(figsize=(10, 6))
-    plt.plot(k_range, db_indices, marker='o')
-    plt.title('CR para k (k-means) com a base '+basesname[indice])
-    plt.xlabel('Número de Cluster (k)')
-    plt.ylabel('Índice Corrected Rand')
+    plt.plot(k_range, db_indices, marker='o',color='blue')
+    plt.title('CR for k (k-means) with '+basesname[indice])
+    plt.xlabel('Number of Cluster(k)')
+    plt.ylabel('Corrected Rand Index')
+    plt.plot(k_range, db_hi_indeces, marker='x', color='red')
     plt.xticks(k_range)
     plt.grid(True)
-    plt.savefig("checkpoint/cr_kmeans"+str(indice)+".png")
-    print("checkpoint/cr_kmeans"+str(indice)+".png")
-    plt.figure(figsize=(10, 6))
-    plt.plot(k_range, db_hi_indeces, marker='o')
-    plt.title('CR para k (Hierarchical) com a base '+basesname[indice])
-    plt.xlabel('Número de Cluster (k)')
-    plt.ylabel('Índice Corrected Rand')
-    plt.xticks(k_range)
-    plt.grid(True)
-    print("checkpoint/cr_hieraquicalgroupdb"+str(indice)+".png")
-    plt.savefig("checkpoint/cr_hieraquical"+str(indice)+".png")
+    plt.savefig("checkpoint/cr_"+str(indice)+".png")
     indice+=1

@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
+from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score,KFold, cross_val_predict
-from sklearn.metrics import accuracy_score, mean_squared_error
+from sklearn.metrics import accuracy_score, mean_squared_error, classification_report, roc_curve, auc
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
@@ -134,6 +135,9 @@ for resultsdb in resultsdata:
     print("=================")
     print(databasesName[j])
     i = 0
+    atribute = databases[j].iloc[:, :-1]
+
+    y = label_encoder.fit_transform( databases[j].iloc[:, -1])
     for results in resultsdb:
         results_df = pd.DataFrame(results)
         # Perform the Friedman test
@@ -157,7 +161,54 @@ for resultsdb in resultsdata:
         # Perform the Wilcoxon signed-rank test
         posthoc_results = sp.posthoc_wilcoxon(results_df_cv_long,group_col='Model', val_col='Prediction',  p_adjust='holm')
         print("\nPost-hoc Wilcoxon test results "+aux[i]+":")
-        print(posthoc_results)
+        # Fill the new DataFrame
+        output_data = []
+        #for inex, row in posthoc_results.iterrows():
+        #    for col in posthoc_results.columns:
+        #        if inex != col:
+        #            output_data.append({
+        #                'Classifier1': inex,
+        #                'Classifier2': col,
+        #                'Pvalue': row[col]
+        #            })
+        #output_df = pd.DataFrame(output_data)
+
+        if i == 0:
+            kft = KFold(n_splits=10, shuffle=True, random_state=42)
+            y_test = np.empty_like(y)
+            for train_index, test_index in kft.split(atribute, y):
+                y_test[test_index] = y[test_index]
+        else:
+            X_train, X_test, y_train, y_test = train_test_split(atribute, y, test_size=i * 0.1, random_state=42)
+
+        print("Classification Report " + str(i))
+
+        plt.figure(figsize=(8, 6))
+
+        for model_name, y_pred in results.items():
+            y_pred_i = results.values()
+            print(classification_report(y_test, y_pred_i))
+            fpr, tpr, _ = roc_curve(y_test, y_pred_i)  #
+            roc_auc = auc(fpr, tpr)
+            plt.plot(fpr, tpr, label=f'{model_name} (AUC = {roc_auc:.2f})')
+
+        plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.05])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Receiver Operating Characteristic (ROC) Curve')
+        plt.legend(loc="lower right")
+        plt.grid(True)
+        plt.savefig("checkpoint/roc" + databasesName[j] + aux[i] + ".png")
+
+        #def format_float(x):
+        #    if abs(x) < 0.0001:
+        #        return f"{x:.2e}"  # Scientific notation for values less than 0.0001
+        #    else:
+        #        return f"{x:.4f}"  # Default formatting for other values
+
+        #print(output_df.to_latex(index=False,float_format=lambda x: format_float(x)))
         i += 1
     j += 1
 

@@ -1,25 +1,44 @@
 import pandas as pd
-from transformers import pipeline
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.model_selection import cross_val_score
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc
 
-# Define the file paths for the input CSV files
-file1 = 'sistematicreviens/player_centered_game_desigC.csv'
-output_file = 'sistematicreviens/player_centered_game_desigC2.csv'
-# Read the CSV files into pandas dataframes
-df1 = pd.read_csv(file1)
+# Load dataset from CSV
+df = pd.read_csv('checkpoint/data.csv')
 
-classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
-#df1['Abstract'].fillna('', inplace=True)
-df1['Abstract'] = df1['Abstract'].fillna('')
-labels = ["Player Centered Design"]
+# Assuming the last column is the target variable and others are features
+X = df.iloc[:, :-1]  # Features
+y = df.iloc[:, -1]   # Target
 
-def classify_abstract(abstract):
-    if abstract.strip() == '':
-        return 0.0
-    result = classifier(abstract, candidate_labels=labels)
-    return result['scores'][0]  # The label with the highest score
+# Perform KMeans clustering
+n_clusters = 6  # Example: using 5 clusters
+kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+cluster_labels = kmeans.fit_predict(X)
 
-df1['Player Centered Design Score (Title)']  = df1['Title'].apply(classify_abstract)
-df1['Player Centered Design Score']  = df1['Abstract'].apply(classify_abstract)
-df1.to_csv(output_file, index=False)
+# Convert cluster labels to one-hot encoding
+cluster_labels_onehot = np.eye(n_clusters)[cluster_labels]
 
-print(f"Data has been successfully written to {output_file}")
+# Concatenate cluster labels (or one-hot encoded) with original features
+X_clustered = np.concatenate((X, cluster_labels_onehot), axis=1)
+
+# Define classifiers
+classifiers = {
+    'KNN': KNeighborsClassifier(),
+    'Naive Bayes': GaussianNB(),
+    'Decision Tree': DecisionTreeClassifier(random_state=42,max_depth=5),
+    'MPL':MLPClassifier(),
+}
+
+# Evaluate classifiers using cross-validation
+for clf_name, clf in classifiers.items():
+    scores = cross_val_score(clf, X, y, cv=10)
+    print(f'{clf_name} Accuracy Normal: {scores.mean():.2f} (+/- {scores.std() * 2:.2f})')
+    scores = cross_val_score(clf, X_clustered, y, cv=10)
+    print(f'{clf_name} Accuracy Clustered: {scores.mean():.2f} (+/- {scores.std() * 2:.2f})')

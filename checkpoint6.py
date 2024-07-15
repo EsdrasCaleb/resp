@@ -13,7 +13,7 @@ import time
 
 original_database = pd.read_csv('checkpoint/data.csv')
 df_lessattr = pd.read_csv('checkpoint/redusida2.csv')
-basesname = ["Orignal","Reduzida 2"]
+basesname = ["Orignal Dataset","Reduced Dataset 2"]
 databases = [original_database.iloc[:, :-1],df_lessattr.iloc[:, :-1]]
 indice = 0
 for db in databases:
@@ -38,28 +38,19 @@ for db in databases:
             labels = hc.fit_predict(db)
             dbh_index = davies_bouldin_score(db,labels)
             dbh_index_k.append(dbh_index)
-        
+
         # Average Davies-Bouldin index for the current k
         db_indices.append(np.mean(db_index_k))
         db_hi_indeces.append(np.mean(dbh_index_k))
 
     # Plot the Davies-Bouldin index for each k
     plt.figure(figsize=(10, 6))
-    plt.plot(k_range, db_indices, marker='o')
-    plt.title('DB para k (k-means) com a base '+basesname[indice])
-    plt.xlabel('Número de Cluster (k)')
-    plt.ylabel('Índice Davies-Bouldin')
+    plt.plot(k_range, db_indices, marker='o', color='blue', label='DB for KMeans')
+    plt.title('Davies-Bouldin Index per cluster')
+    plt.xlabel('Number of Cluster(k)')
+    plt.ylabel('Davies-Bouldin Index')
+    plt.plot(k_range, db_hi_indeces, marker='x', color='red', label='DB for Hierarchical Clustering')
     plt.xticks(k_range)
     plt.grid(True)
-    plt.savefig("checkpoint/kmeans"+str(indice)+".png")
-    print("checkpoint/kmeans"+str(indice)+".png")
-    plt.figure(figsize=(10, 6))
-    plt.plot(k_range, db_hi_indeces, marker='o')
-    plt.title('DB para k (Hierarchical) com a base '+basesname[indice])
-    plt.xlabel('Número de Cluster (k)')
-    plt.ylabel('Índice Davies-Bouldin')
-    plt.xticks(k_range)
-    plt.grid(True)
-    print("checkpoint/hieraquicalgroupdb"+str(indice)+".png")
-    plt.savefig("checkpoint/hieraquical"+str(indice)+".png")
+    plt.savefig("checkpoint/db"+str(indice)+".png")
     indice+=1
