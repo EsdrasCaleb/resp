@@ -174,6 +174,7 @@ for resultsdb in resultsdata:
         #output_df = pd.DataFrame(output_data)
 
         if i == 0:
+            continue
             kft = KFold(n_splits=10, shuffle=True, random_state=42)
             y_test = np.empty_like(y)
             for train_index, test_index in kft.split(atribute, y):
