@@ -18,7 +18,7 @@ X = df.iloc[:, :-1]  # Features
 y = df.iloc[:, -1]   # Target
 
 # Perform KMeans clustering
-n_clusters = 6  # Example: using 5 clusters
+n_clusters = 3  # Example: using 5 clusters
 kmeans = KMeans(n_clusters=n_clusters, random_state=42)
 cluster_labels = kmeans.fit_predict(X)
 

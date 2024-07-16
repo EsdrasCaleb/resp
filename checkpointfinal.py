@@ -173,15 +173,6 @@ for resultsdb in resultsdata:
         #            })
         #output_df = pd.DataFrame(output_data)
 
-        if i == 0:
-            continue
-            kft = KFold(n_splits=10, shuffle=True, random_state=42)
-            y_test = np.empty_like(y)
-            for train_index, test_index in kft.split(atribute, y):
-                y_test[test_index] = y[test_index]
-        else:
-            X_train, X_test, y_train, y_test = train_test_split(atribute, y, test_size=i * 0.1, random_state=42)
-
         print("Classification Report " + str(i))
 
         plt.figure(figsize=(8, 6))

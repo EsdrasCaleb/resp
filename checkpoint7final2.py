@@ -83,7 +83,7 @@ for datastring in ['checkpoint/data.csv', 'checkpoint/redusida2.csv']:
                             bagging_model = BaggingClassifier(estimator=clf, n_estimators=n_estimators,
                                                               max_features=max_features, random_state=42)
                             bagging_accuracy = evaluate_classifier(bagging_model, X, y, split)
-                            resultsdata[i]["begging " + split[1] + name + " est" + str(n_estimators)] = \
+                            resultsdata[i]["begging " + split[1] + name + " est" + str(n_estimators)+"fet"+str(max_features)] = \
                             [bagging_accuracy[1],bagging_accuracy[2]]
                             result.append(str(bagging_accuracy[0]))
                         else:
@@ -125,53 +125,73 @@ for datastring in ['checkpoint/data.csv', 'checkpoint/redusida2.csv']:
     for n_classifiers in n_classifiers_list:
         base_estimators = [(f'knn_{i}', base_knn) for i in range(n_classifiers // 2)] + \
                           [(f'mlp_{i}', base_mlp) for i in range(n_classifiers // 2, n_classifiers)]
+        stacking_model = StackingClassifier(estimators=base_estimators,
+                                            final_estimator=MLPClassifier(max_iter=1000), cv=5)
         i = 0
         for split in splits:
             # Define the StackingClassifier
-            stacking_model = StackingClassifier(estimators=base_estimators,
-                                                final_estimator=MLPClassifier(max_iter=1000), cv=5)
 
             # Evaluate the model
             accuracy = evaluate_classifier(stacking_model, X, y, split)
             resultsdata[i]["Stacking KNN MPL" + split[1] + " est d"] = [accuracy[1],accuracy[2]]
             print(f'{split[1]}, {n_classifiers}, {accuracy[0]}', flush=True)
             i += 1
-    base_estimators = [(f'ad_{i}', DecisionTreeClassifier(random_state=42, max_depth=5)) for i in range(2)] + \
+    base_estimators = [(f'ad_{i}', DecisionTreeClassifier(random_state=42, max_depth=5)) for i in range(4)] + \
                       [(f'RF_{i}', RandomForestClassifier(n_estimators=20, criterion='entropy', random_state=42)) for i
                        in range(1)] + \
                       [(f'RD_{i}', base_knn) for i
-                       in range(2)] + \
-                      [(f'mlp_{i}',
-                        MLPClassifier(hidden_layer_sizes=7, max_iter=1000, learning_rate_init=0.01, random_state=42))
-                       for i in range(1)]
+                       in range(1)] + \
+                      [(f'mlp_U',
+                        MLPClassifier(hidden_layer_sizes=7, max_iter=1000, learning_rate_init=0.01, random_state=42)),
+                       (f'mlp_G',
+                        MLPClassifier(hidden_layer_sizes=95, max_iter=200,learning_rate_init=0.01, random_state=3)),
+                       (f'mlp_U2',
+                        MLPClassifier(hidden_layer_sizes=6, max_iter=1000, learning_rate_init=0.001,random_state=42)),
+                       (f'mlp_G2',
+                        MLPClassifier(hidden_layer_sizes=111, max_iter=500,learning_rate_init=0.001, random_state=9))
+                       ]
     stacking_model = StackingClassifier(estimators=base_estimators, final_estimator=base_mlp, cv=10)
-
+    i = 0
     # Evaluate the model
-    accuracy = evaluate_classifier(stacking_model, X, y, (0.3, '70/30'))
-    resultsdata[3]["Stacking MPL KNN NB RandFlorest 70/30"] = [accuracy[1],accuracy[2]]
-    print(f'Stacking com decision tree e random forest {accuracy[0]}')
+    for split in splits:
+        accuracy = evaluate_classifier(stacking_model, X, y, split)
+        resultsdata[i]["Stacking MPL KNN NB RandFlorest " + split[1] + " est d"] = [accuracy[1], accuracy[2]]
+        print(f'{split[1]}, 6 , {accuracy[0]}', flush=True)
+        i += 1
     i = 0
     aux = ["Ten Fold", '90/10', '80/20', '70/30']
-
+    print("=================")
+    print("Clasification report")
+    print("Dataset,Classifier,trategy,Class,precision,recall,f1-score,support")
     for results in resultsdata:
         results_df = pd.DataFrame(results)
-        plt.figure(figsize=(8, 6))
-
+        fig = plt.figure(figsize=(12, 6))
+        ax = plt.subplot(111)
         for model_name, y_array in results.items():
-            print("Classification Report " + model_name + aux[i] + databasesName[j])
-            print(classification_report(y_array[1], y_array[0]))
+            # print("Classification Report " + model_name + aux[i] + databasesName[j])
+            cr = classification_report(y_array[1], y_array[0], digits=4, output_dict=True)
+            print(','.join(
+                [databasesName[j], model_name, aux[i], 'irrelevant', str(round(cr['0']['precision'] * 100, 2)) + '%',
+                 str(round(cr['0']['recall'] * 100, 2)) + '%', str(round(cr['0']['f1-score'] * 100, 2)) + '%',
+                 str(cr['0']['support'])]))
+            print(','.join(
+                [databasesName[j], model_name, aux[i], 'relevant', str(round(cr['1']['precision'] * 100, 2)) + '%',
+                 str(round(cr['1']['recall'] * 100, 2)) + '%', str(round(cr['1']['f1-score'] * 100, 2)) + '%',
+                 str(cr['1']['support'])]))
             fpr, tpr, _ = roc_curve(y_array[1], y_array[0])  #
             roc_auc = auc(fpr, tpr)
-            plt.plot(fpr, tpr, label=f'{model_name} (AUC = {roc_auc:.2f})')
+            ax.plot(fpr, tpr, label=f'{model_name} (AUC = {roc_auc:.2f})')
 
-        plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+        ax.plot([0, 1], [0, 1], color='gray', linestyle='--')
         plt.xlim([0.0, 1.0])
         plt.ylim([0.0, 1.05])
+        box = ax.get_position()
+        ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
         plt.title('Receiver Operating Characteristic (ROC) Curve')
-        plt.legend(loc="lower right")
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
         plt.grid(True)
-        plt.savefig("checkpoint/rocfinal2" + databasesName[j] + aux[i].replace('/', '_') + ".png")
+        plt.savefig("checkpoint/rocfinal" + databasesName[j] + aux[i].replace('/', '_') + ".png")
         i +=1
     j+=1

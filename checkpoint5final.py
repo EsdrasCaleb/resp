@@ -45,12 +45,15 @@ classifiers = ["KNN","Decision tree","Naive Bayes","MPL (Plot)","MPL (GrindSearc
 databasesName = ["Original","No outliners r1","Menos atributos r2","PCA R3"]
 i = 0
 resultsdata = [[{},{},{},{}],[{},{},{},{}],[{},{},{},{}],[{},{},{},{}]]
+frideman = {}
 label_encoder = LabelEncoder()
 print('Classifier,Trainer,3,5,7')
 for classifiername in classifiers:
     finalresult = []
     j = 0
     for database in databases:
+        if(not databasesName[j] in frideman):
+            frideman[databasesName[j]] = {}
         result = [[classifiername+databasesName[j],'10fold'],
                   [classifiername+databasesName[j],'10/90'],
                   [classifiername+databasesName[j],'20/80'],
@@ -58,8 +61,10 @@ for classifiername in classifiers:
         atribute = database.iloc[:, :-1]
         y = database.iloc[:, -1]
         classe = label_encoder.fit_transform(y)
+        fresult = []
         if(i < 2):
             for k in klen:
+                fresult = []
                 trainer = None
                 if(i ==0):
                     trainer = KNeighborsClassifier(n_neighbors=k)
@@ -67,30 +72,47 @@ for classifiername in classifiers:
                     trainer = DecisionTreeClassifier(random_state=42,max_depth=k)
                 datascore = tenfold(trainer, atribute, classe)
                 result[0].append(datascore[0])
+                fresult.append(float(datascore[0]))
+
                 resultsdata[j][0][classifiername+"k"+str(k)+"kfold"] = [datascore[1],datascore[2]]
                 datascore = splited(trainer, atribute, classe, 0.1)
                 result[1].append(datascore[0])
+                fresult.append(float(datascore[0]))
+
                 resultsdata[j][1][classifiername + "k" + str(k) + "split10/90"] = [datascore[1],datascore[2]]
                 datascore = splited(trainer, atribute, classe, 0.2)
                 result[2].append(datascore[0])
+                fresult.append(float(datascore[0]))
+
                 resultsdata[j][2][classifiername + "k" + str(k) + "split20/80"] = [datascore[1],datascore[2]]
                 datascore = splited(trainer, atribute, classe, 0.3)
                 resultsdata[j][3][classifiername + "k" + str(k) + "split30/70"] = [datascore[1],datascore[2]]
                 result[3].append(datascore[0])
+                fresult.append(float(datascore[0]))
+                frideman[databasesName[j]][classifiername+"k" + str(k)] = fresult
         elif(i==2):
             trainer = GaussianNB(priors=None, var_smoothing=1e-9)
             datascore = tenfold(trainer, atribute, classe)
             result[0].append(datascore[0])
+            fresult.append(float(datascore[0]))
             resultsdata[j][0][classifiername + "kfold"] = [datascore[1],datascore[2]]
+
             datascore = splited(trainer, atribute, classe, 0.1)
             result[1].append(datascore[0])
+            fresult.append(float(datascore[0]))
             resultsdata[j][1][classifiername + "split10/90"] = [datascore[1],datascore[2]]
+
             datascore = splited(trainer, atribute, classe, 0.2)
             result[2].append(datascore[0])
+            fresult.append(float(datascore[0]))
             resultsdata[j][2][classifiername + "split20/80"] = [datascore[1],datascore[2]]
+
             datascore = splited(trainer, atribute, classe, 0.3)
             resultsdata[j][3][classifiername + "split30/70"] = [datascore[1],datascore[2]]
             result[3].append(datascore[0])
+            fresult.append(float(datascore[0]))
+            frideman[databasesName[j]][classifiername] = fresult
+
         else:
             if(i==3):
                 trainerTen = MLPClassifier(hidden_layer_sizes=7, max_iter=1000, learning_rate_init=0.01, random_state=42)
@@ -105,17 +127,24 @@ for classifiername in classifiers:
             datascore = tenfold(trainer, atribute, classe)
             result[0].append(datascore[0])
             resultsdata[j][0][classifiername + "kfold"] = [datascore[1],datascore[2]]
+            fresult.append(float(datascore[0]))
 
             trainer = trainerSplited
             datascore = splited(trainer, atribute, classe, 0.1)
             result[1].append(datascore[0])
             resultsdata[j][1][classifiername + "split10/90"] = [datascore[1],datascore[2]]
+            fresult.append(float(datascore[0]))
+
             datascore = splited(trainer, atribute, classe, 0.2)
             result[2].append(datascore[0])
             resultsdata[j][2][classifiername + "split20/80"] = [datascore[1],datascore[2]]
+            fresult.append(float(datascore[0]))
+
             datascore = splited(trainer, atribute, classe, 0.3)
             resultsdata[j][3][classifiername + "split30/70"] = [datascore[1],datascore[2]]
             result[3].append(datascore[0])
+            fresult.append(float(datascore[0]))
+            frideman[databasesName[j]][classifiername] = fresult
 
         finalresult += result
         j += 1
@@ -131,56 +160,64 @@ pd.set_option('display.max_rows', None)  # Show all rows
 pd.set_option('display.max_columns', None)  # Show all columns
 pd.set_option('display.width', None)  # Auto-adjust width to display data fully
 j=0
+print("=================")
+print("Clasification report")
+print("Dataset,Classifier,trategy,Class,precision,recall,f1-score,support")
 for resultsdb in resultsdata:
-    print("=================")
-    print(databasesName[j])
+    # print("=================")
+    # print(databasesName[j])
     i = 0
-    atribute = databases[j].iloc[:, :-1]
+    #
+    # results_df = pd.DataFrame(frideman[databasesName[j]])
+    # # Perform the Friedman test
+    #
+    # stat, p_value = friedmanchisquare(*[results_df[col] for col in results_df])
+    # print("\nFriedman test results :")
+    # print(f'Statistic: {stat}, p-value: {p_value}')
+    # # Determine the critical value
+    # k = results_df.shape[1]
+    # df = k - 1
+    # alpha = 0.05
+    # critical_value = chi2.ppf(1 - alpha, df)
+    # print(f'Critical value: {critical_value}')
+    #
+    # # Decision rule
+    # if stat > critical_value:
+    #     print("Reject the null hypothesis (H0). There are significant differences between the models.")
+    # else:
+    #     print("Fail to reject the null hypothesis (H0). There are no significant differences between the models.")
 
-    y = label_encoder.fit_transform( databases[j].iloc[:, -1])
     for results in resultsdb:
-        results_df = pd.DataFrame(results)
-
-        # Fill the new DataFrame
-        output_data = []
-        #for inex, row in posthoc_results.iterrows():
-        #    for col in posthoc_results.columns:
-        #        if inex != col:
-        #            output_data.append({
-        #                'Classifier1': inex,
-        #                'Classifier2': col,
-        #                'Pvalue': row[col]
-        #            })
-        #output_df = pd.DataFrame(output_data)
 
 
 
-        plt.figure(figsize=(8, 6))
-
+        fig = plt.figure(figsize=(12, 6))
+        ax = plt.subplot(111)
         for model_name, y_array in results.items():
-            print("Classification Report " + model_name+aux[i]+databasesName[j] )
-            print(classification_report(y_array[1], y_array[0]))
+            # print("Classification Report " + model_name+aux[i]+databasesName[j] )
+            cr = classification_report(y_array[1], y_array[0],digits=4, output_dict=True)
+            print(','.join([databasesName[j],model_name,aux[i],'irrelevant',str(round(cr['0']['precision']*100,2))+'%',
+                            str(round(cr['0']['recall']*100,2))+'%',str(round(cr['0']['f1-score']*100,2))+'%',
+                            str(cr['0']['support'])]))
+            print(','.join([databasesName[j], model_name, aux[i], 'relevant', str(round(cr['1']['precision'] * 100,2)) + '%',
+                            str(round(cr['1']['recall'] * 100,2)) + '%', str(round(cr['1']['f1-score'] * 100,2)) + '%',
+                            str(cr['1']['support']) ]))
             fpr, tpr, _ = roc_curve(y_array[1], y_array[0])  #
             roc_auc = auc(fpr, tpr)
-            plt.plot(fpr, tpr, label=f'{model_name} (AUC = {roc_auc:.2f})')
+            ax.plot(fpr, tpr, label=f'{model_name} (AUC = {roc_auc:.2f})')
 
-        plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+        ax.plot([0, 1], [0, 1], color='gray', linestyle='--')
         plt.xlim([0.0, 1.0])
         plt.ylim([0.0, 1.05])
+        box = ax.get_position()
+        ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
         plt.xlabel('False Positive Rate')
         plt.ylabel('True Positive Rate')
         plt.title('Receiver Operating Characteristic (ROC) Curve')
-        plt.legend(loc="lower right")
+        ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
+                  fancybox=True, shadow=True, ncol=5)
         plt.grid(True)
-        plt.savefig("checkpoint/roc" + databasesName[j] + aux[i].replace('/','_') + ".png")
-
-        #def format_float(x):
-        #    if abs(x) < 0.0001:
-        #        return f"{x:.2e}"  # Scientific notation for values less than 0.0001
-        #    else:
-        #        return f"{x:.4f}"  # Default formatting for other values
-
-        #print(output_df.to_latex(index=False,float_format=lambda x: format_float(x)))
+        plt.savefig("checkpoint/rocfinal" + databasesName[j] + aux[i].replace('/', '_') + ".png")
         i += 1
     j += 1
 
