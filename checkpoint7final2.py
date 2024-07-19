@@ -50,9 +50,9 @@ kumites = [
     'Ada',
     'Bagging',
 ]
-databasesName = ["Original","Reduced 2"]
+databasesName = ["Reduced 1","Reduced 3"]
 j = 0
-for datastring in ['checkpoint/data.csv', 'checkpoint/redusida2.csv']:
+for datastring in ['checkpoint/redusida1.csv', 'checkpoint/redusida3.csv']:
     resultsdata = [{}, {}, {}, {}]
     # Train and evaluate classifiers with different configurations
     # Load data from CSV file
